@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>DowUplBot Player — Series API</title>
+
+<!-- مكتبات المشغل -->
+<script src="https://js.puter.com/v2/"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js"></script>
+<!-- مكتبة HLS لدعم الروابط المباشرة (m3u8) -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
+<!-- الخطوط -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ─── PLYR THEME ─── */
+:root {
+  --plyr-color-main: #00e87a;
+  --plyr-video-background: #000;
+  --plyr-font-family: 'IBM Plex Mono', monospace;
+  --plyr-badge-background: #10141a;
+  --plyr-menu-background: #10141a;
+  --plyr-menu-color: #bccdd8;
+  --plyr-menu-border-color: #1a2030;
+}
+
+/* ─── DESIGN SYSTEM ─── */
+:root {
+  --bg: #060809;
+  --surface: #0c0f12;
+  --panel: #10141a;
+  --border: #1a2030;
+  --border2: #232d3d;
+  --green: #00e87a;
+  --yellow: #ffcc00;
+  --red: #ff3d3d;
+  --blue: #3d9eff;
+  --cyan: #00d4ff;
+  --dim: #2a3545;
+  --text: #bccdd8;
+  --text-dim: #4a5e72;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body { padding: 12px; }
+
+/* ─── HEADER ─── */
+.header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.header-left h1 { font-family: 'IBM Plex Mono', monospace; font-size: clamp(0.75rem, 3vw, 1rem); color: var(--green); letter-spacing: 0.06em; }
+.header-left p { font-size: clamp(0.6rem, 2.5vw, 0.75rem); color: var(--text-dim); font-family: 'IBM Plex Mono', monospace; margin-top: 5px; }
+
+/* ─── PANELS & COMPONENTS ─── */
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.panel-hd { font-family: 'IBM Plex Mono', monospace; font-size: clamp(0.65rem, 2vw, 0.8rem); color: var(--text-dim); letter-spacing: .05em; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+.btn { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 600; padding: 8px 16px; border-radius: 5px; cursor: pointer; border: 1px solid; transition: all .15s; background: transparent; }
+.btn-dim { border-color: var(--dim); color: var(--text-dim); }
+.btn-dim:hover { background: var(--border); color: #fff; }
+
+/* ─── SEARCH BOX ─── */
+.search-container { margin-bottom: 16px; position: relative; }
+.search-input { width: 100%; padding: 12px 16px 12px 40px; background: var(--surface); border: 1px solid var(--border2); border-radius: 8px; color: var(--text); font-family: 'Tajawal', sans-serif; font-size: 0.95rem; outline: none; transition: all 0.3s ease; }
+.search-input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(0, 232, 122, 0.1); }
+.search-input::placeholder { color: var(--text-dim); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); pointer-events: none; }
+
+/* ─── CATALOG ─── */
+.series-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.series-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 8px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; justify-content: center; min-height: 110px; }
+.series-card:hover { border-color: var(--green); background: rgba(0,232,122,0.05); transform: translateY(-2px); }
+.series-card h3 { font-size: 0.9rem; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+.series-card span { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--text-dim); }
+
+/* ─── PLAYER VIEW ─── */
+.video-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+#video-wrapper { background: #000; width: 100%; position: relative; }
+#video-wrapper .plyr { width: 100%; border-radius: 0; }
+.episodes-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.ep-btn { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; padding: 8px 14px; border-radius: 5px; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text); transition: all 0.15s; }
+.ep-btn:hover { border-color: var(--cyan); background: rgba(0, 212, 255, 0.1); }
+.ep-btn.active { border-color: var(--green); background: rgba(0, 232, 122, 0.15); color: var(--green); }
+.msg-box { text-align: center; padding: 20px; font-family: 'IBM Plex Mono', monospace; color: var(--yellow); grid-column: 1 / -1; }
+.error-text { color: var(--red); }
+
+/* ─── ASPECT RATIO MODES ─── */
+#video-wrapper video { object-fit: contain; transition: object-fit 0.3s ease, width 0.3s, height 0.3s; }
+#video-wrapper.ar-fill video { object-fit: fill !important; }
+#video-wrapper.ar-cover video { object-fit: cover !important; }
+#video-wrapper.ar-16-9 .plyr__video-wrapper { aspect-ratio: 16/9 !important; }
+#video-wrapper.ar-16-9 video { object-fit: contain !important; }
+#video-wrapper.ar-4-3 .plyr__video-wrapper { aspect-ratio: 4/3 !important; }
+#video-wrapper.ar-4-3 video { object-fit: contain !important; }
+#video-wrapper.ar-21-9 .plyr__video-wrapper { aspect-ratio: 21/9 !important; }
+#video-wrapper.ar-21-9 video { object-fit: contain !important; }
+#video-wrapper.ar-1-1 .plyr__video-wrapper { aspect-ratio: 1/1 !important; }
+#video-wrapper.ar-1-1 video { object-fit: contain !important; }
+
+@keyframes icon-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.animate-spin-once { animation: icon-spin 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.custom-ratio-btn { position: relative; display: flex !important; align-items: center; justify-content: center; min-width: 34px; padding: 0 6px !important; cursor: pointer; border: none; background: transparent; color: inherit; }
+.custom-ratio-btn svg { transition: transform 0.2s ease, color 0.2s ease; }
+.custom-ratio-btn:active svg { transform: scale(0.8); color: var(--plyr-color-main); }
+.custom-ratio-btn .plyr__tooltip { font-family: 'IBM Plex Mono', monospace !important; font-size: 0.62rem !important; white-space: nowrap; }
+.custom-ratio-btn:hover .plyr__tooltip { opacity: 1; visibility: visible; }
+.custom-ratio-btn:hover { color: var(--plyr-color-main, #00e87a); }
+
+/* ─── FULLSCREEN CSS ─── */
+body.custom-fs-active { overflow: hidden; overscroll-behavior: none; }
+body.custom-fs-active #app-root { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100vw !important; height: 100vh !important; max-width: none !important; margin: 0 !important; padding: 0 !important; z-index: 999999 !important; background: #000 !important; border-radius: 0 !important; overflow: hidden !important; display: flex !important; flex-direction: column !important; justify-content: center !important; }
+body.custom-fs-active .video-panel { flex: 1 1 auto !important; border-radius: 0 !important; border: none !important; height: 100% !important; margin-bottom: 0 !important; }
+body.custom-fs-active #video-wrapper, body.custom-fs-active #video-wrapper .plyr, body.custom-fs-active #video-wrapper .plyr__video-wrapper, body.custom-fs-active #video-wrapper video { height: 100% !important; max-height: 100% !important; border-radius: 0 !important; }
+body.custom-fs-active .header, body.custom-fs-active #view-catalog, body.custom-fs-active .episodes-panel, body.custom-fs-active > *:not(#app-root) { display: none !important; }
+.fs-exit-btn { display: none; position: fixed; top: max(12px, env(safe-area-inset-top)); left: 14px; z-index: 9999999; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; padding: 8px 16px; border-radius: 20px; cursor: pointer; backdrop-filter: blur(6px); }
+body.custom-fs-active .fs-exit-btn { display: flex; align-items: center; gap: 6px; }
+body.custom-fs-active .plyr__controls { z-index: 10000000 !important; }
+</style>
+</head>
+<body>
+
+<button class="fs-exit-btn" id="fs-exit-btn" onclick="toggleCustomFullscreen()">✕ خروج</button>
+
+<div id="app-root">
+  <div class="header">
+    <div class="header-left">
+      <h1>// DowUplBot Player</h1>
+      <p id="header-subtitle">واجهة تشغيل المسلسلات المباشرة</p>
+    </div>
+    <div>
+      <button class="btn btn-dim" id="btn-back" style="display:none;" onclick="goHome()">◀ العودة للقائمة</button>
+    </div>
+  </div>
+
+  <div id="view-catalog" class="panel">
+    <div class="panel-hd">قائمة المسلسلات المتاحة</div>
+    <div class="search-container">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="search-input" class="search-input" placeholder="ابحث عن مسلسل... (يدعم أ، إ، ا، ي، ئ، ة، ه)">
+    </div>
+    <div id="series-grid" class="series-grid">
+      <div class="msg-box">جاري تحميل المسلسلات...</div>
+    </div>
+  </div>
+
+  <div id="view-player" style="display: none;">
+    <div class="video-panel">
+      <div id="video-wrapper">
+        <video id="video" style="width:100%;" controls crossorigin playsinline autoplay></video>
+      </div>
+    </div>
+    <div class="panel episodes-panel">
+      <div class="panel-hd">
+        <span id="current-series-name">الحلقات</span>
+        <span id="player-status" style="color:var(--cyan); font-size:0.7rem;"></span>
+      </div>
+      <div id="episodes-list" class="episodes-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE_URL = 'http://localhost:2000/rseries';
+
+let shakaPlayer;
+let hlsPlayer;
+let plyrPlayer;
+let allSeriesData = []; 
+
+function normalizeArabic(text) {
+    if (!text) return '';
+    return text.replace(/[\u064B-\u065F\u0670]/g, '').replace(/[أإآا]/g, 'ا').replace(/[يىئ]/g, 'ي').replace(/[ةه]/g, 'ه');
+}
+
+document.getElementById('search-input').addEventListener('input', function(e) {
+    const query = normalizeArabic(e.target.value.trim().toLowerCase());
+    const filteredData = allSeriesData.filter(series => normalizeArabic(series.name.toLowerCase()).includes(query));
+    renderCatalog(filteredData);
+});
+
+let isCustomFullscreen = false;
+let clonedFsBtn = null;
+
+function toggleCustomFullscreen() {
+    if (!isCustomFullscreen) {
+        document.body.classList.add('custom-fs-active');
+        document.body.style.overflow = 'hidden';
+        try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch(e) {}
+        isCustomFullscreen = true;
+        if (clonedFsBtn) clonedFsBtn.classList.add('plyr__control--pressed');
+    } else {
+        document.body.classList.remove('custom-fs-active');
+        document.body.style.overflow = '';
+        try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch(e) {}
+        isCustomFullscreen = false;
+        if (clonedFsBtn) clonedFsBtn.classList.remove('plyr__control--pressed');
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isCustomFullscreen) toggleCustomFullscreen();
+});
+
+const AR_CLASSES =['', 'ar-cover', 'ar-fill', 'ar-16-9', 'ar-4-3', 'ar-21-9', 'ar-1-1'];
+const AR_LABELS  =['Contain', 'Cover', 'Fill', '16:9', '4:3', '21:9', '1:1'];
+let arIndex = 0;
+
+function handleRatioClick(btnElement) {
+    arIndex = (arIndex + 1) % AR_CLASSES.length;
+    const wrapper = document.getElementById('video-wrapper');
+    AR_CLASSES.forEach(cls => { if(cls) wrapper.classList.remove(cls); });
+    if (AR_CLASSES[arIndex]) wrapper.classList.add(AR_CLASSES[arIndex]);
+    const tooltip = document.getElementById('plyr-ar-tooltip');
+    if (tooltip) tooltip.textContent = `الأبعاد: ${AR_LABELS[arIndex]}`;
+    const svg = btnElement.querySelector('svg');
+    if (svg) { svg.classList.remove('animate-spin-once'); void svg.offsetWidth; svg.classList.add('animate-spin-once'); }
+}
+
+async function loadCatalog() {
+    const grid = document.getElementById('series-grid');
+    grid.innerHTML = '<div class="msg-box">جاري تحميل المسلسلات...</div>';
+    try {
+        const res = await fetch(`${API_BASE_URL}/`);
+        const data = await res.json();
+        if (data.status === 'success' && data.data && Array.isArray(data.data)) {
+            allSeriesData = data.data;
+            renderCatalog(allSeriesData);
+        } else { grid.innerHTML = '<div class="msg-box error-text">فشل في استخراج البيانات من الـ API</div>'; }
+    } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<div class="msg-box error-text">تعذر الاتصال بالخادم (تأكد أن ${API_BASE_URL} يعمل)</div>`;
+    }
+}
+
+function renderCatalog(dataArray) {
+    const grid = document.getElementById('series-grid');
+    grid.innerHTML = '';
+    if (dataArray.length === 0) {
+        grid.innerHTML = '<div class="msg-box" style="width:100%">لا يوجد نتائج مطابقة لبحثك.</div>';
+        return;
+    }
+    dataArray.forEach(series => {
+        const card = document.createElement('div');
+        card.className = 'series-card';
+        card.onclick = () => openSeries(series.id, series.name);
+        card.innerHTML = `<h3>${series.name}</h3><span>ID: ${series.id}</span>`;
+        grid.appendChild(card);
+    });
+}
+
+async function openSeries(seriesId, seriesName) {
+    document.getElementById('view-catalog').style.display = 'none';
+    document.getElementById('view-player').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'block';
+    document.getElementById('current-series-name').textContent = seriesName;
+    document.getElementById('header-subtitle').textContent = `تتصفح الآن: ${seriesName}`;
+    const epList = document.getElementById('episodes-list');
+    epList.innerHTML = '<div class="msg-box" style="width:100%">جاري تحميل الحلقات...</div>';
+    destroyPlayer();
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/${seriesId}`);
+        const data = await res.json();
+        if (data.status === 'success' && data.episodes) {
+            epList.innerHTML = '';
+            const episodes = data.episodes.sort((a,b) => parseInt(a.number) - parseInt(b.number));
+            episodes.forEach((ep) => {
+                const btn = document.createElement('button');
+                btn.className = 'ep-btn';
+                btn.textContent = ep.title || `الحلقة ${ep.number}`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    startPlayback(ep.url);
+                };
+                epList.appendChild(btn);
+            });
+            if(episodes.length > 0) epList.firstChild.click();
+        } else { epList.innerHTML = '<div class="msg-box error-text">لا توجد حلقات لهذا المسلسل.</div>'; }
+    } catch (err) { epList.innerHTML = '<div class="msg-box error-text">تعذر جلب الحلقات.</div>'; }
+}
+
+function goHome() {
+    destroyPlayer();
+    if(isCustomFullscreen) toggleCustomFullscreen();
+    document.getElementById('view-player').style.display = 'none';
+    document.getElementById('view-catalog').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'none';
+    document.getElementById('header-subtitle').textContent = 'واجهة تشغيل المسلسلات المباشرة';
+    document.getElementById('search-input').value = '';
+    renderCatalog(allSeriesData);
+}
+
+async function puterSchemePlugin(uri, request, requestType) {
+    try {
+        const response = await puter.net.fetch(uri, { method: request.method || 'GET', headers: request.headers || {}, body: request.body || null });
+        if (!response.ok) throw new shaka.util.Error(shaka.util.Error.Severity.RECOVERABLE, shaka.util.Error.Category.NETWORK, shaka.util.Error.Code.BAD_HTTP_STATUS, uri, response.status, response.headers);
+        const data = await response.arrayBuffer();
+        const headers = {};
+        for (const [key, value] of response.headers.entries()) { headers[key.toLowerCase()] = value; }
+        return { uri: uri, data: data, headers: headers };
+    } catch (error) { throw new shaka.util.Error(shaka.util.Error.Severity.RECOVERABLE, shaka.util.Error.Category.NETWORK, shaka.util.Error.Code.HTTP_ERROR, uri, error, requestType); }
+}
+
+function base64ToHex(str) {
+    let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4 !== 0) b64 += '=';
+    const raw = window.atob(b64);
+    let hex = '';
+    for (let i = 0; i < raw.length; i++) {
+        let h = raw.charCodeAt(i).toString(16);
+        if (h.length === 1) h = '0' + h;
+        hex += h;
+    }
+    return hex;
+}
+
+function updateStatus(text) { document.getElementById('player-status').textContent = text; }
+
+async function destroyPlayer() {
+    if (shakaPlayer) { await shakaPlayer.destroy(); shakaPlayer = null; }
+    if (hlsPlayer) { hlsPlayer.destroy(); hlsPlayer = null; }
+    if (plyrPlayer) { plyrPlayer.destroy(); plyrPlayer = null; }
+    const video = document.getElementById('video');
+    if (video) { video.removeAttribute('src'); video.load(); }
+    updateStatus('');
+}
+
+// دالة تطبيق واجهة Plyr والأزرار المخصصة
+function setupPlyrInterface(video, config) {
+    plyrPlayer = new Plyr(video, config);
+    plyrPlayer.on('ready', () => {
+        const controls = document.querySelector('#video-wrapper .plyr__controls');
+        if (controls) {
+            const ratioBtn = document.createElement('button');
+            ratioBtn.type = 'button';
+            ratioBtn.className = 'plyr__control custom-ratio-btn';
+            ratioBtn.innerHTML = `
+                <svg viewBox="0 0 18 18" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;">
+                    <rect x="2" y="3" width="14" height="12" rx="2" />
+                    <path d="M7 9h4M9 7v4" />
+                </svg>
+                <span class="plyr__tooltip" id="plyr-ar-tooltip">الأبعاد: Contain</span>
+            `;
+            ratioBtn.addEventListener('click', (e) => { e.stopPropagation(); handleRatioClick(ratioBtn); });
+
+            const originalFsBtn = controls.querySelector('[data-plyr="fullscreen"]');
+            if (originalFsBtn) {
+                controls.insertBefore(ratioBtn, originalFsBtn);
+                clonedFsBtn = originalFsBtn.cloneNode(true);
+                originalFsBtn.parentNode.replaceChild(clonedFsBtn, originalFsBtn);
+                clonedFsBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); toggleCustomFullscreen(); });
+            } else { controls.appendChild(ratioBtn); }
+        }
+    });
+}
+
+// دالة التشغيل الذكية (تحلل الرابط وتختار المشغل المناسب)
+async function startPlayback(streamUrl) {
+    if (!streamUrl) { updateStatus('❌ رابط التشغيل مفقود'); return; }
+
+    await destroyPlayer();
+    updateStatus('جاري التحميل...');
+    const video = document.getElementById('video');
+
+    const defaultPlyrConfig = {
+        controls:['play-large','restart','rewind','play','fast-forward','progress','current-time','duration','mute','volume','captions','settings','pip','airplay','fullscreen'],
+        settings: ['quality', 'speed', 'loop'],
+        autoplay: true
+    };
+
+    // التحقق مما إذا كان الرابط هو M3U8 عادي (لا يحتوي على علامة التشفير ###)
+    const isStandardHls = streamUrl.includes('.m3u8') && !streamUrl.includes('###');
+
+    if (isStandardHls) {
+        // ---- تشغيل روابط الـ M3U8 المباشرة عبر HLS.JS ----
+        if (Hls.isSupported()) {
+            hlsPlayer = new Hls({ maxMaxBufferLength: 100 });
+            hlsPlayer.loadSource(streamUrl);
+            hlsPlayer.attachMedia(video);
+            
+            hlsPlayer.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                updateStatus('▶ جاري التشغيل (HLS)');
+                const availableQualities = hlsPlayer.levels.map((l) => l.height).sort((a, b) => b - a);
+                
+                if (availableQualities.length > 0) {
+                    defaultPlyrConfig.quality = {
+                        default: availableQualities[0],
+                        options: availableQualities,
+                        forced: true,
+                        onChange: (e) => {
+                            hlsPlayer.levels.forEach((level, levelIndex) => {
+                                if (level.height === e) { hlsPlayer.currentLevel = levelIndex; }
+                            });
+                        }
+                    };
+                }
+                setupPlyrInterface(video, defaultPlyrConfig);
+            });
+            
+            hlsPlayer.on(Hls.Events.ERROR, function (event, data) {
+                if (data.fatal) updateStatus('❌ فشل تشغيل الرابط المباشر (HLS)');
+            });
+
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // دعم أجهزة أبل (الآيفون والسفاري) التي لا تحتاج hls.js
+            video.src = streamUrl;
+            video.addEventListener('loadedmetadata', function () {
+                updateStatus('▶ جاري التشغيل (Native HLS)');
+                setupPlyrInterface(video, defaultPlyrConfig);
+            });
+        } else {
+            updateStatus('❌ المتصفح لا يدعم تشغيل هذا النوع من الروابط');
+        }
+
+    } else {
+        // ---- تشغيل روابط الـ DRM / DASH عبر Shaka Player ----
+        const hasDRM = streamUrl.includes('###');
+        const manifestUri = hasDRM ? streamUrl.split('###')[0].trim() : streamUrl;
+        
+        shaka.polyfill.installAll();
+        shaka.net.NetworkingEngine.registerScheme('http', puterSchemePlugin);
+        shaka.net.NetworkingEngine.registerScheme('https', puterSchemePlugin);
+
+        shakaPlayer = new shaka.Player(video);
+
+        if (hasDRM) {
+            const keyParts = streamUrl.split('###')[1].split(':');
+            shakaPlayer.configure({ drm: { clearKeys: {[base64ToHex(keyParts[1].trim())]: base64ToHex(keyParts[0].trim()) } } });
+        } else {
+            shakaPlayer.configure({ drm: {} });
+        }
+
+        try {
+            await shakaPlayer.load(manifestUri);
+            updateStatus('▶ جاري التشغيل (Shaka)');
+
+            const tracks = shakaPlayer.getVariantTracks();
+            const heights =[...new Set(tracks.map(t => t.height).filter(h => h))].sort((a, b) => b - a);
+
+            if (heights.length > 0) {
+                defaultPlyrConfig.quality = {
+                    default: 'auto', options: ['auto', ...heights], forced: true,
+                    onChange: (q) => {
+                        if (q === 'auto' || q === 0) { shakaPlayer.configure({ abr: { enabled: true } }); } 
+                        else {
+                            shakaPlayer.configure({ abr: { enabled: false } });
+                            const targetHeight = Number(q);
+                            const tracksFound = shakaPlayer.getVariantTracks().filter(t => t.height === targetHeight);
+                            if (tracksFound.length > 0) {
+                                const bestTrack = tracksFound.sort((a, b) => b.bandwidth - a.bandwidth)[0];
+                                shakaPlayer.selectVariantTrack(bestTrack, true);
+                            }
+                        }
+                    }
+                };
+            }
+            setupPlyrInterface(video, defaultPlyrConfig);
+
+        } catch (e) {
+            console.error('Load Error:', e);
+            updateStatus('❌ فشل تشغيل الرابط (Shaka)');
+        }
+    }
+}
+
+// حماية المحتوى
+document.addEventListener('contextmenu', e => { if (e.target.closest('#video-wrapper')) e.preventDefault(); });
+document.addEventListener('keydown', e => { if (e.ctrlKey && ['u','s','i'].includes(e.key.toLowerCase())) e.preventDefault(); });
+
+window.onload = loadCatalog;
+</script>
+</body>
+</html>
