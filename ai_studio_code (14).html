@@ -1,0 +1,1863 @@
+--- START OF FILE index.html ---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#060809">
+<title>نظام النجاح المتكامل — مبادئ نظم المعلومات</title>
+
+<!-- الخطوط -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN SYSTEM (CYBERDARK SYSTEM) ─── */
+:root {
+  --bg: #060809;
+  --surface: #0c0f12;
+  --panel: #10141a;
+  --border: #1a2030;
+  --border2: #232d3d;
+  --green: #00e87a;
+  --yellow: #ffcc00;
+  --red: #ff3d3d;
+  --blue: #3d9eff;
+  --cyan: #00d4ff;
+  --dim: #2a3545;
+  --text: #bccdd8;
+  --text-dim: #4a5e72;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+body { padding: 16px; max-width: 1200px; margin: 0 auto; }
+
+/* ─── HEADER ─── */
+.header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 24px; 
+  gap: 15px; 
+  flex-wrap: wrap; 
+  padding-bottom: 16px; 
+  border-bottom: 1px solid var(--border); 
+}
+.header-left h1 { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: clamp(1.1rem, 4vw, 1.7rem); 
+  color: var(--green); 
+  letter-spacing: 0.02em; 
+}
+.header-left p { 
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem); 
+  color: var(--text-dim); 
+  margin-top: 5px; 
+}
+
+/* ─── NAVIGATION TABS ─── */
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+.tab-btn {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  color: var(--text-dim);
+  transition: all .2s ease-in-out;
+}
+.tab-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+.tab-btn.active {
+  border-color: var(--green);
+  color: var(--bg);
+  background: var(--green);
+}
+
+/* ─── PANELS & CARDS ─── */
+.panel { 
+  background: var(--panel); 
+  border: 1px solid var(--border); 
+  border-radius: 10px; 
+  padding: 20px; 
+  margin-bottom: 20px; 
+}
+.panel-hd { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 1.1rem; 
+  color: var(--green); 
+  letter-spacing: .02em; 
+  margin-bottom: 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+  border-bottom: 1px solid var(--border2);
+  padding-bottom: 8px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+}
+.card:hover {
+  border-color: var(--cyan);
+}
+
+/* ─── ACADEMIC MARKUP ─── */
+.badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-left: 6px;
+}
+.badge-concept { background: rgba(61, 158, 255, 0.15); color: var(--blue); border: 1px solid var(--blue); }
+.badge-warning { background: rgba(255, 61, 61, 0.15); color: var(--red); border: 1px solid var(--red); }
+.badge-success { background: rgba(0, 232, 122, 0.15); color: var(--green); border: 1px solid var(--green); }
+.badge-info { background: rgba(0, 212, 255, 0.15); color: var(--cyan); border: 1px solid var(--cyan); }
+
+h2.section-title {
+  color: var(--cyan);
+  font-size: 1.3rem;
+  margin-top: 24px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+p.desc {
+  color: var(--text);
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+strong {
+  color: #fff;
+}
+
+/* ─── CODE BLOCKS & CONSOLES ─── */
+pre {
+  background: #020304;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 14px;
+  overflow-x: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: #a5d6ff;
+  margin: 12px 0;
+}
+code {
+  font-family: 'IBM Plex Mono', monospace;
+  background: #020304;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--yellow);
+  font-size: 0.9rem;
+}
+
+/* ─── TABLES ─── */
+.table-responsive {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+th, td {
+  padding: 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border2);
+}
+th {
+  background: rgba(0, 212, 255, 0.05);
+  color: var(--cyan);
+  font-weight: bold;
+}
+tr:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+/* ─── FLOWCHART CSS ─── */
+.flowchart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+.flow-node {
+  background: var(--surface);
+  border: 2px solid var(--border2);
+  border-radius: 6px;
+  padding: 12px 20px;
+  text-align: center;
+  min-width: 200px;
+  font-weight: bold;
+}
+.flow-node.active {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 8px rgba(0,232,122,0.2);
+}
+.flow-arrow {
+  color: var(--cyan);
+  font-size: 1.5rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ─── INTERACTIVE EXAM SYSTEM ─── */
+.exam-intro {
+  text-align: center;
+  padding: 30px;
+  border: 1px dashed var(--border2);
+  border-radius: 10px;
+  background: rgba(0, 212, 255, 0.02);
+}
+.btn-action {
+  font-family: 'Tajawal', sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 12px 30px;
+  background: var(--green);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 232, 122, 0.3);
+}
+.btn-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 232, 122, 0.5);
+}
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text);
+  box-shadow: none;
+}
+.btn-secondary:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: none;
+}
+.quiz-section-title {
+  font-size: 1.2rem;
+  color: var(--yellow);
+  margin-top: 25px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border2);
+  padding-bottom: 6px;
+}
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.q-num {
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--cyan);
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.q-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.option-item:hover {
+  border-color: var(--text-dim);
+}
+.option-item input {
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.option-item.selected {
+  border-color: var(--cyan);
+  background: rgba(0, 212, 255, 0.05);
+}
+.tf-container {
+  display: flex;
+  gap: 15px;
+}
+.tf-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: var(--panel);
+  color: var(--text);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.tf-btn:hover {
+  border-color: var(--cyan);
+}
+.tf-btn.selected-true {
+  background: rgba(0, 232, 122, 0.15);
+  border-color: var(--green);
+  color: var(--green);
+}
+.tf-btn.selected-false {
+  background: rgba(255, 61, 61, 0.15);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.explanation-box {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: none;
+}
+.explanation-box.correct {
+  background: rgba(0, 232, 122, 0.08);
+  border-left: 4px solid var(--green);
+  border-right: none;
+  color: var(--green);
+}
+.explanation-box.incorrect {
+  background: rgba(255, 61, 61, 0.08);
+  border-left: 4px solid var(--red);
+  border-right: none;
+  color: var(--red);
+}
+
+/* ─── RESULT REPORT BOARD ─── */
+.results-board {
+  text-align: center;
+  padding: 30px;
+  background: var(--surface);
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: none;
+}
+.score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--green);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.score-val {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--green);
+}
+.score-lbl {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* ─── ACADEMIC TABS ─── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>⚡ نظام النجاح والتقييم المتكامل</h1>
+      <p>مبادئ نظم المعلومات — الفرقة الثانية (محاسبة ومراجعة ونظم)</p>
+    </div>
+    <div class="btn-time" style="font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--yellow);">
+      ⚠️ الامتحان يقترب | خطة الإنقاذ السريع
+    </div>
+  </div>
+
+  <!-- MAIN NAVIGATION TABS -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('study')">📚 المنهج والتلخيص الشامل</button>
+    <button class="tab-btn" onclick="switchTab('relations')">🧩 العلاقات والشبكات الذهنية</button>
+    <button class="tab-btn" onclick="switchTab('memorization')">🧠 نظام الحفظ والتذكر السريع</button>
+    <button class="tab-btn" onclick="switchTab('practical')">🧪 حل المقالي والعملي بالتفصيل</button>
+    <button class="tab-btn" id="exam-tab-btn" onclick="switchTab('exam')">🎯 الاختبار التفاعلي (30 سؤال)</button>
+  </div>
+
+  <!-- ==============================================
+       TAB 1: STUDY & DETAILED STUDY GUIDE
+       ============================================== -->
+  <div id="tab-study" class="tab-content active">
+    <!-- MODULE 1 -->
+    <div class="panel">
+      <div class="panel-hd">🔹 المحور الأول: مفاهيم النظم والمعلومات وتصنيفاتها</div>
+      
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> مفهوم النظام وتصنيفاته البيئية</h3>
+        <p class="desc">النظام هو مجموعة من الموارد والعناصر المترابطة التي تتفاعل داخل إطار معين لتحقيق هدف مشترك.</p>
+        <p class="desc"><strong>شرح مبسط:</strong> تخيل ساعة يد ميكانيكية؛ تروس وعقارب وبطارية مختلفة تتكامل معاً، إذا تعطل ترص واحد يتأثر نظام إخراج الوقت بالكامل.</p>
+        <p class="desc"><strong>شرح أكاديمي:</strong> النظم تصنف هيكلياً وبيئياً كالتالي:</p>
+        <ul>
+          <li><strong>النظام الطبيعي:</strong> من صنع الخالق ولا دخل للبشر فيه (مثل الكون، الشمس، الأمطار).</li>
+          <li><strong>النظام الاصطناعي:</strong> من تصميم وبناء البشر لخدمة أغراضهم (مثل المنشآت الاقتصادية، الحواسب).</li>
+          <li><strong>النظام المفتوح (Open System):</strong> يتأثر ويؤثر في البيئة الخارجية المحيطة، وتعتمد المنظمات عليه لتبادل مدخلاتها ومخرجاتها.</li>
+          <li><strong>النظام المغلق (Closed System):</strong> معزول كلياً عن محيطه الخارجي ولا يتأثر به (تطبيقياً نادر جداً في العلوم الاجتماعية والإدارية).</li>
+          <li><strong>النظام الاحتمالي (Probabilistic System):</strong> نظام لا يمكن التنبؤ بحالته المستقبلية بيقين، ونحتاج لدراسته إلى استخدام الطرق الإحصائية والاحتمالية (مثل حركة السوق المالي).</li>
+        </ul>
+        <div style="margin-top:10px;">
+          <span class="badge badge-warning">خدعة متكررة</span> يدمج واضع الامتحان في صياغة العبارات بين مفهوم النظام الطبيعي والنظام المفتوح أو الاحتمالي للتشويش المباشر على الطالب.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> هرمية البيانات ووحدات القياس بالحاسب</h3>
+        <p class="desc">البيانات هي المادة الخام والمشاهدات الأولية، بينما المعلومات هي المادة المعالجة والمنظمة الصالحة فوراً لاتخاذ القرار.</p>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الوحدة</th>
+                <th>التفاصيل التقنية والمعادلة</th>
+                <th>الأهمية للامتحان</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>البايت (Byte)</strong></td>
+                <td>يحتوي على 8 بت (Bits) فقط.</td>
+                <td>فخ متكرر: يدعي في السؤال أنها تحتوي على 16 بت.</td>
+              </tr>
+              <tr>
+                <td><strong>الكيلوبايت (KB)</strong></td>
+                <td>1024 بايت.</td>
+                <td>الوحدة الأساسية للملفات النصية البسيطة.</td>
+              </tr>
+              <tr>
+                <td><strong>الميجابايت (MB)</strong></td>
+                <td>1024 كيلوبايت.</td>
+                <td>أكبر بكثير من البايت الفردي.</td>
+              </tr>
+              <tr>
+                <td><strong>التيرابايت (TB)</strong></td>
+                <td>1024 جيجابايت.</td>
+                <td>أكبر بكثير من الميجابايت وهي وحدات السعة الضخمة.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 2 -->
+    <div class="panel">
+      <div class="panel-hd">🔹 المحور الثاني: الهرم المعلوماتي ونظم المنظمات (MIS Pyramid)</div>
+      
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> هيكل نظم المعلومات بالمنظمات</h3>
+        <p class="desc">تتوزع النظم بالمنظمة بحسب الهرم الإداري التقليدي كالتالي:</p>
+        <ul>
+          <li><strong>المستوى التشغيلي (الأدنى):</strong> يخدمه نظم معالجة المعاملات <code>TPS</code>، ويهتم بالعمليات اليومية الروتينية (البيع، الشراء، حركات الصراف الآلي ATM).</li>
+          <li><strong>المستوى التكتيكي/المعرفي (الأوسط):</strong> تخدمه نظم المعلومات الإدارية <code>MIS</code> ونظم إدارة المعرفة <code>KMS</code> وميكنة المكاتب <code>OAS</code>. تركز على إنتاج <strong>التقارير الدورية</strong> والتقارير الاستثنائية.</li>
+          <li><strong>المستوى الاستراتيجي (الأعلى):</strong> تخدمه نظم دعم القرار <code>DSS</code> ونظم دعم الإدارة العليا <code>ESS</code>، وتركز على القرارات شبه الهيكلية أو غير الروتينية الطويلة المدى.</li>
+        </ul>
+        <p class="desc"><strong>لماذا هذا مهم؟</strong> لا يمكن لنظم الـ <code>TPS</code> دعم الإدارة العليا بقراراتها الاستراتيجية، فمهمتها مقتصرة تماماً على المعاملات والعمليات اليومية.</p>
+      </div>
+
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> الأنظمة المتكاملة والبيانات الضخمة</h3>
+        <ul>
+          <li><strong>نظام تخطيط موارد المؤسسة (ERP):</strong> نظام موحد مدمج يربط الأقسام والعمليات المختلفة (المالية، الموارد البشرية HR، المشتريات والمخازن MM، البيع) في قاعدة بيانات مركزية مشتركة.</li>
+          <li><strong>نظام إدارة علاقات العملاء (CRM):</strong> يهدف لبناء علاقات طويلة الأمد مع العملاء من خلال تتبع وتحليل معلوماتهم، ومؤشر <code>CLTV</code> يقيس قيمة عمر العميل للشركة استناداً لإيراداته المستقبلية المتوقعة.</li>
+          <li><strong>مستودعات البيانات (Data Warehouse):</strong> قاعدة بيانات تاريخية ضخمة تجميعية تساند الإدارة في تحليل البيانات واتخاذ القرارات الإدارية، وتعتمد على تقنيات التنقيب عن البيانات <code>Data Mining</code> لإيجاد علاقات منطقية مخفية ومفيدة.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="panel">
+      <div class="panel-hd">🔹 المحور الثالث: عتاد الحاسب، لغات البرمجة والبرمجيات</div>
+      
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> وحدات الإدخال والإخراج وذاكرة الحاسب</h3>
+        <p class="desc">التمييز الدقيق بين المكونات المادية يمنع خسارة الدرجات في الأسئلة السريعة:</p>
+        <ul>
+          <li><strong>وحدات الإدخال:</strong> ماسح الباركود، قارئ الـ QR Code، قارئ العلامات البصرية <code>OMR</code>، الميكروفون، والماسح الضوئي (Scanner).</li>
+          <li><strong>وحدات الإخراج:</strong> الشاشة التقليدية، السماعات، كارت الشاشة <code>VGA</code>، وطابعات الليزر (وهي الأسرع مقارنة بطابعات Inkjet القديمة).</li>
+          <li><strong>شاشة اللمس (Touch screen):</strong> وحدة إدخال وإخراج مشتركة في نفس الوقت.</li>
+          <li><strong>RAM مقابل ROM:</strong> الـ <code>RAM</code> ذاكرة عشوائية للقراءة والكتابة وتفقد محتوياتها بانقطاع الكهرباء، بينما الـ <code>ROM</code> ذاكرة قراءة فقط دائمة تحفظ تعليمات الإقلاع الأساسية للنظام.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> المترجم (Compiler) والمفسر (Interpreter)</h3>
+        <p class="desc">المترجم يحلل البرنامج بالكامل دفعة واحدة ويحوله للغة الآلة، بينما المفسر يقوم بالترجمة والتنفيذ <strong>سطراً بسطر</strong> أو فقرة فقرة.</p>
+      </div>
+    </div>
+
+    <!-- MODULE 4 -->
+    <div class="panel">
+      <div class="panel-hd">🔹 المحور الرابع: أساسيات البرمجة بلغة جافا (Java)</div>
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> أنواع البيانات وتكوين الجمل</h3>
+        <p class="desc">لكتابة وإعداد الجمل البرمجية الصحيحة للامتحان:</p>
+        <ul>
+          <li>المتغيرات العددية الصحيحة نستخدم معها <code>int</code> أو <code>Integer</code> (مثل: <code>score = 90</code>).</li>
+          <li>المتغيرات العشرية والكسرية نستخدم معها <code>float</code> أو <code>double</code> (مثل: <code>Price = 20.95</code>).</li>
+          <li>المتغيرات النصية نستخدم معها الكلمة المحجوزة <code>String</code> (مثل: <code>"Celia"</code>).</li>
+          <li>المتغيرات المنطقية نستخدم معها <code>boolean</code> وقيمها تكون فقط <code>true</code> أو <code>false</code>.</li>
+          <li>الإعلان عن الثوابت التي لا تتغير قيمتها أثناء التشغيل يتم باستخدام الكلمة المفتاحية <code>final</code>.</li>
+          <li>عامل عدم التساوي البرمجي في جافا يكتب كالتالي: <code>!=</code>.</li>
+          <li>باقي القسمة يتم عبر الرمز <code>%</code> (مثال: <code>5 % 2 = 1</code>، بينما <code>4 % 2 = 0</code>).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MODULE 5 -->
+    <div class="panel">
+      <div class="panel-hd">🔹 المحور الخامس: إكسيل المتقدم للمحاسبين والمحللين (Excel)</div>
+      <div class="card">
+        <h3><span class="badge badge-concept">الفكرة الأساسية</span> الدوال المحاسبية والإحصائية والتركيبية</h3>
+        <p class="desc">الخلايا هي نقطة تقاطع الأعمدة (التي تأخذ حروفاً مثل A, B, C) مع الصفوف (التي تأخذ أرقاماً مثل 1, 2, 3).</p>
+        <ul>
+          <li><strong>دالة <code>COUNT()</code>:</strong> تحسب الخلايا التي تحتوي على قيم <strong>رقمية فقط</strong> وتتجاهل النصوص تماماً.</li>
+          <li><strong>دالة <code>COUNTA()</code>:</strong> تحسب جميع الخلايا <strong>غير الفارغة</strong> بغض النظر عما إذا كانت أرقاماً أو نصوصاً (مثل رصد حضور وغياب الطلاب).</li>
+          <li><strong>دالة <code>SUMIF()</code>:</strong> دالة الجمع الشرطي، تُستخدم لفصل وجمع القيم المدينة عن الدائنة في الدفاتر المالية.</li>
+          <li><strong>الأمر <code>Merge Cells</code>:</strong> يستخدم لدمج خلايا متعددة لتبدو كخلية واحدة وليس لترتيب أو فرز البيانات (فرز البيانات هو وظيفة <code>Sort</code>).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       TAB 2: RELATIONS & MIND MAPS
+       ============================================== -->
+  <div id="tab-relations" class="tab-content">
+    <div class="panel">
+      <div class="panel-hd">🧩 شبكة الربط والاعتمادية بين دروس المنهج</div>
+      
+      <div class="flowchart">
+        <div class="flow-node active">المستوى التشغيلي والعمليات اليومية (TPS)</div>
+        <div class="flow-arrow">↓ تنقل البيانات الخام إلى</div>
+        <div class="flow-node">نظام معالجة وتخزين البيانات المحاسبية وقواعد البيانات</div>
+        <div class="flow-arrow">↓ يتم استدعاؤها وتحليلها عبر</div>
+        <div class="flow-node">دوال الجمع الإكسيل المتقدم والفرز المحاسبي (Excel / SUMIF)</div>
+        <div class="flow-arrow">↓ تترجم النتائج إلى مؤشرات لدعم القرار لدى الإدارة العليا</div>
+        <div class="flow-node active">نظم دعم القرار الاستراتيجي (DSS / ESS)</div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ مقارنة أكاديمية هامة للامتحان</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>وجه المقارنة</th>
+                <th>نظم معالجة العمليات TPS</th>
+                <th>نظم دعم القرار DSS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>المستوى الإداري المستهدف</strong></td>
+                <td>المستوى التشغيلي الأدنى بالمنظمة</td>
+                <td>المستوى الإستراتيجي والإدارة العليا والوسطى</td>
+              </tr>
+              <tr>
+                <td><strong>نوعية القرارات والعمليات</strong></td>
+                <td>روتينية متكررة ويومية مبسطة</td>
+                <td>شبه روتينية، معقدة وغير مهيكلة تماماً</td>
+              </tr>
+              <tr>
+                <td><strong>أمثلة حية بالمنشآت</strong></td>
+                <td>عمليات تسجيل المبيعات والفواتير والـ ATM</td>
+                <td>تحليل تراجع السوق، التنبؤ بحجم الاستثمارات المستقبلية</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       TAB 3: MEMORIZATION SYSTEMS & SHORTCUTS
+       ============================================== -->
+  <div id="tab-memorization" class="tab-content">
+    <div class="panel">
+      <div class="panel-hd">🧠 نظام التذكر السريع والروابط الذهنية الذكية لليلة الامتحان</div>
+      
+      <div class="card">
+        <h3>💡 حيلة الحفظ السريع 1: التفريق بين الرموز الأمنية الكبرى</h3>
+        <p class="desc">لضمان عدم التداخل بين طرق الاختراق والتهديدات الأمنية بالمنظمات:</p>
+        <ul>
+          <li><strong>الاصطياد (Phishing):</strong> تذكر كلمة <strong>Fish (صيد)</strong> 🎣؛ المخترق يلقي لك طعماً (رسالة بريد إلكتروني كاذبة أو رسالة نصية مزيفة) وينتظر أن تبتلعه لسرقة بياناتك.</li>
+          <li><strong>التوجيه الكاذب (Pharming):</strong> تذكر كلمة <strong>Farm (مزرعة)</strong> 🚜؛ المخترق لا يرسل رسائل، بل يقوم "بزرع" نظام لإعادة توجيهك تلقائياً لنسخة مزيفة بالكامل من الموقع الأصلي لتدخل بياناتك بنفسك دون وعي.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>💡 حيلة الحفظ السريع 2: لغات البرمجة ودوال إكسيل</h3>
+        <ul>
+          <li><strong>COUNT:</strong> حرف (N) يرمز للرقم <strong>Numbers</strong> 🔢 (تعد الأرقام فقط).</li>
+          <li><strong>COUNTA:</strong> حرف (A) يرمز لـ <strong>All (الجميع)</strong> 🔠 (تعد الأرقام والنصوص وكل خلية غير فارغة).</li>
+          <li><strong>Compiler (المترجم):</strong> يبدأ بـ (C) كأنه يترجم <strong>Complete (كامل)</strong> البرنامج مرة واحدة 📦.</li>
+          <li><strong>Interpreter (المفسر):</strong> يترجم الكود <strong>سطراً بسطر (Line by Line)</strong> 📝.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       TAB 4: PRACTICAL & ESSAY DETAILED SOLUTIONS
+       ============================================== -->
+  <div id="tab-practical" class="tab-content">
+    <div class="panel">
+      <div class="panel-hd">🧪 حلول المسائل الرياضية والمحاسبية والبرمجية التفصيلية</div>
+
+      <!-- EXCEL FORMULA RESOLUTION -->
+      <div class="card">
+        <h3>🔥 أولاً: فك وحل المعادلات الإكسيل المركبة والمنطقية</h3>
+        <p class="desc"><strong>المسألة:</strong> احسب ناتج المعادلة التالية بفرض أن الخلايا تحتوي على: <code>A1=10, A2=20, A3=30, A4=40</code></p>
+        <pre>=A1/2 * IF(SUM(A1:A4)>=100, 20, 0)</pre>
+        <p class="desc"><strong>الحل الرياضي والمنطقي خطوة بخطوة:</strong></p>
+        <ol>
+          <li>أولاً، نقوم بحساب العمليات داخل دالة الجمع: <code>SUM(A1:A4) = 10 + 20 + 30 + 40 = 100</code>.</li>
+          <li>نقوم بتقييم الشرط المنطقي داخل دالة <code>IF</code>: هل المجموع (100) أكبر من أو يساوي 100؟ نعم، الشرط صحيح تماماً (True).</li>
+          <li>بما أن الشرط صحيح، يرجع الإكسيل القيمة الأولى للشرط وهي <code>20</code>.</li>
+          <li>نقوم بحل العملية الحسابية الخارجية: <code>A1 / 2 = 10 / 2 = 5</code>.</li>
+          <li>نضرب النتيجة الخارجية بقيمة دالة الـ IF: <code>5 * 20 = 100</code>.</li>
+        </ol>
+        <p class="desc"><strong>الناتج النهائي الصحيح هو: <code>100</code></strong></p>
+      </div>
+
+      <!-- JAVA ALGORITHM EXPLAINED -->
+      <div class="card">
+        <h3>💻 ثانياً: برمجيات الجافا الإحصائية والحسابية</h3>
+        <p class="desc"><strong>المسألة:</strong> صمم برنامج جافا متكامل لقراءة درجات الطلاب وحساب المتوسط، النهاية العظمى، والنهاية الصغرى.</p>
+        <pre>
+import java.util.Scanner;
+
+public class StudentGrades {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("أدخل عدد الطلاب: ");
+        int n = input.nextInt();
+        double[] grades = new double[n];
+        double sum = 0;
+        
+        for(int i = 0; i < n; i++) {
+            System.out.print("أدخل درجة الطالب رقم " + (i+1) + ": ");
+            grades[i] = input.nextDouble();
+            sum += grades[i];
+        }
+        
+        double maxScore = grades[0];
+        double minScore = grades[0];
+        
+        for(int i = 1; i < n; i++) {
+            if(grades[i] > maxScore) maxScore = grades[i];
+            if(grades[i] < minScore) minScore = grades[i];
+        }
+        
+        double averageScore = sum / n;
+        
+        System.out.println("المتوسط الحسابي للدرجات: " + averageScore);
+        System.out.println("النهاية العظمى للدرجات: " + maxScore);
+        System.out.println("النهاية الصغرى للدرجات: " + minScore);
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       TAB 5: INTERACTIVE EXAM GENERATOR (15 MCQ + 15 T/F)
+       ============================================== -->
+  <div id="tab-exam" class="tab-content">
+    <div class="panel">
+      <div class="panel-hd">🎯 المولد الذكي للاختبارات التفاعلية العشوائية</div>
+      
+      <!-- INTRO BLOCK -->
+      <div id="exam-intro-view" class="exam-intro">
+        <h2 style="color:var(--green); margin-bottom:12px;">مستعد لتقييم مستواك الآن؟</h2>
+        <p class="desc" style="max-width: 600px; margin: 0 auto 20px;">يقوم النظام بفرز وتوليد 15 سؤال اختيار من متعدد و 15 سؤال صح وخطأ عشوائياً من بنك الأسئلة المعتمد للمادة العلمية مع تتبع وتحليل الإجابات.</p>
+        <button class="btn-action" onclick="generateAndStartExam()">🚀 توليد اختبار جديد وبدء الحل</button>
+      </div>
+
+      <!-- EXAM PLAYGROUND VIEW (Hidden Initially) -->
+      <div id="exam-playground-view" style="display:none;">
+        <!-- SCORE REPORT BOARD -->
+        <div id="results-board" class="results-board">
+          <div class="score-circle">
+            <span class="score-val" id="result-score-txt">0/30</span>
+            <span class="score-lbl">الدرجة النهائية</span>
+          </div>
+          <h2 id="result-feedback-title" style="color:#fff; margin-bottom:8px;">أداء رائع!</h2>
+          <p class="desc" id="result-feedback-desc"></p>
+          <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
+            <button class="btn-action" onclick="generateAndStartExam()">🔄 إعادة الاختبار بأسئلة جديدة</button>
+            <button class="btn-action btn-secondary" onclick="scrollToTop()">🔝 مراجعة إجاباتك بالأسفل</button>
+          </div>
+        </div>
+
+        <div id="exam-questions-container">
+          <!-- Questions will be injected dynamically here -->
+        </div>
+
+        <div style="text-align:center; margin-top:30px; border-top: 1px solid var(--border2); padding-top:20px;">
+          <button id="submit-exam-btn" class="btn-action" onclick="gradeExam()">📋 إنهاء الاختبار وتصحيح الإجابات</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── JAVASCRIPT EXAM DATABASE & CONTROLLER ─── -->
+<script>
+// --- BANCO OF MCQs (47 Total) ---
+const rawMCQ = [
+  {
+    q: "نظم الـ .......... عبارة عن برنامج لإدارة العمليات التجارية، والذي يسمح للمؤسسة باستخدام نظام تطبيقات متكامل لإدارة أعمالها.",
+    options: ["ERP", "DSS", "MIS", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "نظام ERP (Enterprise Resource Planning) يربط كافة إدارات المؤسسة في نظام وتطبيقات موحدة متكاملة."
+  },
+  {
+    q: "نظم الـ .......... يدير العلاقات مع العملاء وتحليل بيانات خاصة برضاء العملاء.",
+    options: ["CRM", "DSS", "SCM", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "نظم CRM (Customer Relationship Management) مخصصة لإدارة وتحسين وتخزين علاقات وتفاعلات المنشأة مع عملائها الحاليين والمستقبليين."
+  },
+  {
+    q: "مصطلح الـ .......... يشير الى استخدام نظم المعلومات والاتصالات في عمليات شراء المواد الخام ونصف المصنعة ومستلزمات الإنتاج والحصول على المهارات.",
+    options: ["الشراء الإلكتروني", "النقود الإلكترونية", "التخزين الإلكتروني", "كلا مما سبق"],
+    answer: 0,
+    exp: "الشراء الإلكتروني يشير إلى استخدام منصات الاتصالات والإنترنت لإتمام صفقات شراء وتوريد مستلزمات الإنتاج."
+  },
+  {
+    q: "تستخدم الـ .......... في تحليل واستخراج البيانات وتحديد العملاء المربحين وحساب معدلات التراجع داخل المؤسسة.",
+    options: ["OLAP", "نظم دعم القرارات", "نظم المعلومات الادارية", "كلا مما سبق"],
+    answer: 0,
+    exp: "تقنيات OLAP (التحليل التحليلي الفوري) تساعد في إجراء الحسابات التحليلية المعقدة واكتشاف البيانات والعملاء المربحين."
+  },
+  {
+    q: "عنصر .......... يشير الى التأكد من ان المعلومات لا تكشف ولا يطلع عليها من قبل اشخاص غير مخولين بذلك.",
+    options: ["الموضوعية/السرية Confidentiality", "التكاملية Integrity", "توفر المعلومات Availability", "كلا مما سبق"],
+    answer: 0,
+    exp: "السرية أو الخصوصية (Confidentiality) تضمن منع وصول الأشخاص غير المصرح لهم للمعلومات الحساسة."
+  },
+  {
+    q: ".......... هي مجموعة من البرامج التي يتم تحميلها على اجهزة الحاسب دون علم المستخدم وتقوم بمراقبة مستخدم الحاسب وتسجيل كل ما يفعلة.",
+    options: ["فيروسات الحاسب", "الديدان Worms", "البرمجيات الخبيثة (وتحديداً برامج التجسس Spyware)", "كلا مما سبق"],
+    answer: 2,
+    exp: "البرمجيات الخبيثة وتحديداً برامج التجسس (Spyware) تعمل خفية لمراقبة سلوك المستخدم وتسجيل أنشطته."
+  },
+  {
+    q: "خطر الـ .......... يتمثل في إرسال كم هائل من الطلبات الكاذبة الى خوادم الويب Web Servers بهدف تحطيم الشبكة وتعطيلها.",
+    options: ["فيروسات الحاسب", "البرمجيات الخبيثة", "DOS Attack", "كلا مما سبق"],
+    answer: 2,
+    exp: "هجوم حجب الخدمة DOS Attack (Denial of Service) يهدف لإغراق خادم الويب بطلبات وهمية حتى يتوقف عن العمل تماماً."
+  },
+  {
+    q: "خطر الـ .......... يتضمن التصيد الاحتيالي إنشاء مواقع ويب مزيفة أو إرسال رسائل بريد إلكتروني أو رسائل نصية تبدو مثل مواقع المؤسسات الاصلية.",
+    options: ["فيروسات الحاسب", "البرمجيات الخبيثة", "خطر الاصطياد Phishing", "كلا مما سبق"],
+    answer: 2,
+    exp: "الاصطياد الاحتيالي Phishing يعتمد على إرسال طعم مثل الروابط والرسائل المزيفة المماثلة تماماً للشركات الحقيقية."
+  },
+  {
+    q: ".......... هي جريمة تهدف الحصول على أجزاء رئيسية من المعلومات الشخصية ، مثل بيانات الرقم القومي ، أو أرقام رخصة القيادة.",
+    options: ["سرقة الهوية Identity Theft", "البرمجيات الخبيثة", "خطر الاصطياد Phishing", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "سرقة الهوية تعني الاستيلاء غير القانوني على بيانات وثائق الهوية الشخصية للضحية واستغلالها مالياً وقانونياً."
+  },
+  {
+    q: "خطر الـ .......... يعيد توجيه المستخدمين إلى صفحة ويب مزيفة تشبه المواقع الأصلية للمؤسسات وتطلب الكشف عن معلومات شخصية.",
+    options: ["Pharming", "البرمجيات الخبيثة", "Phishing", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "التوجيه الكاذب Pharming يعيد توجيه الضحايا آلياً دون نقرهم على روابط وهمية من خلال اختراق خوادم العناوين DNS."
+  },
+  {
+    q: ".......... هو مزيج من الأجهزة والبرامج التي تتحكم في تدفق حركة مرور الشبكة الواردة والصادرة.",
+    options: ["جدار الحماية Firewall", "البرمجيات الخبيثة", "مكافح الفيروسات Antivirus", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "جدار الحماية Firewall يعمل كبوابة لحظر الحركات المشبوهة والتحكم في الاتصال الوارد والخارج للشبكة."
+  },
+  {
+    q: ".......... هي ملفات البيانات المستخدمة لتحديد هوية المستخدمين والأصول الإلكترونية لحماية المعاملات عبر الإنترنت.",
+    options: ["الشهادات الرقمية", "البرمجيات الخبيثة", "مكافح الفيروسات Antivirus", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "الشهادات الرقمية (Digital Certificates) تعمل كجواز سفر إلكتروني موثوق به لإثبات الهوية الشخصية رقمياً."
+  },
+  {
+    q: "التشـفير هو عملية تحويل نص عادي plain text أو بيانات إلى نص مشفر cipher text لا يمكن لأي شخص قراءته بخلاف المرسل والمستقبل.",
+    options: ["التشفير Encryption", "الشهادات الرقمية", "مكافح الفيروسات Antivirus", "كلا مما سبق"],
+    answer: 0,
+    exp: "التشفير هو حماية البيانات بتحويلها من شكلها المقروء إلى صيغة مرمزة لا تفهم إلا بوجود مفتاح فك التشفير المناسب."
+  },
+  {
+    q: "تُستخدم .......... في نقل البيانات بأمان مع إخفاء الهوية عبر الشبكات العامة عن طريق إخفاء عناوين IP وتشفير البيانات.",
+    options: ["الشبكة الخاصة الافتراضية VPN", "الشهادات الرقمية", "مكافح الفيروسات Antivirus", "كلا مما سبق"],
+    answer: 0,
+    exp: "الشبكات الافتراضية الخاصة VPN تشفر حركة المرور وتبعد المتلصصين عبر تشفير الاتصال بالكامل وإخفاء عنوان الـ IP الحقيقي."
+  },
+  {
+    q: "..........هو الشخص المسؤول عن دراسة النظام القائم بغرض تشخيص نقاط ضعفه وتقديم مقترحات وحلول مناسبة لتصميم نظام جديد.",
+    options: ["محلل النظم", "مصمم النظم", "مدخلي البيانات", "كلا مما سبق"],
+    answer: 0,
+    exp: "محلل النظم (Systems Analyst) يدرس الوضع القائم بالمنشأة ويشخص العلل ويصمم بدائل التحسين للنظام الجديد."
+  },
+  {
+    q: "الـ .......... في مخطط تدفق البيانات DFD يستخدم لتمثيل تدفق البيانات داخل المؤسسة.",
+    options: ["السهم", "الكيان", "العملية", "تخزين البيانات"],
+    answer: 0,
+    exp: "السهم (Arrow) في مخططات DFD يوضح مسار وتوجه تدفق البيانات بين المكونات."
+  },
+  {
+    q: "الـ .......... في مخطط تدفق البيانات DFD يستخدم لتمثيل حفظ وتخزين البيانات داخل المؤسسة.",
+    options: ["السهم", "الكيان", "العملية", "تخزين البيانات"],
+    answer: 3,
+    exp: "مستودع البيانات أو تخزين البيانات (Data Store) يعبر عن المكان الذي تحفظ فيه البيانات بشكل دائم أو مؤقت."
+  },
+  {
+    q: "مخطط الفئات Class Diagram احد مخططات الـ UML ويستخدم في توصيف الـ......",
+    options: ["النموذج الهيكلي", "النموذج التفاعلي", "النموذج السلوكي", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "مخطط الفئات Class Diagram يمثل البناء الهيكلي الثابت (Structural Model) للكائنات وعلاقاتها المشتركة."
+  },
+  {
+    q: "مخطط حالة الاستخدام Use Case احد مخططات الـ UML ويستخدم في توصيف الـ..........",
+    options: ["النموذج الهيكلي", "النموذج التفاعلي", "النموذج السلوكي/التفاعلي", "لا شيء مما سبق"],
+    answer: 2,
+    exp: "مخطط حالة الاستخدام يمثل الجانب السلوكي التفاعلي الخارجي للمستخدمين مع وظائف النظام."
+  },
+  {
+    q: "علاقة الـ .......... في مخطط حالة الاستخدام Use Case تمثل علاقة في الحالات الاستثنائية او نادراً ما يتم اللجوء إليها.",
+    options: ["include", "extend", "use", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "العلاقة extend تمثل حالة سلوكية اختيارية أو استثنائية لا تنفذ إلا بشروط معينة وليس بشكل دائم."
+  },
+  {
+    q: ".......... هي عبارة عن مجموعة العمليات المتمثلة في عمليات البيع والشراء والدفع الإلكتروني للسلع والخدمات عبر شبكات الاتصالات الالكترونية.",
+    options: ["التجارة التقليدية", "التطور الالكتروني", "التجارة الإلكترونية", "لا شيء مما سبق"],
+    answer: 2,
+    exp: "التجارة الإلكترونية (E-Commerce) تهدف لتنفيذ وإدارة عمليات البيع والشراء والخدمات مالياً وتجارياً عبر الإنترنت."
+  },
+  {
+    q: ".......... يمكن الحاسب الآلى من تبادل البيانات والمعاملات بين المنظمات بشكل موحد.",
+    options: ["التجارة التقليدية", "التطور الالكتروني", "التبادل الإلكتروني للبيانات EDI", "لا شيء مما سبق"],
+    answer: 2,
+    exp: "التبادل الإلكتروني للبيانات EDI (Electronic Data Interchange) يربط المنظمات بتبادل المعاملات والوثائق تلقائياً وبشكل قياسي."
+  },
+  {
+    q: "بيع المنتجات والخدمات من الشركات للمستهلك وتعاملاها من خلال بيع التجزئة ، يعتبر مثال على ......",
+    options: ["B2B", "B2C", "C2C", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "B2C (Business to Consumer) يمثل المعاملات والبيع بالتجزئة من الشركات والمتاجر مباشرة إلى المستهلك النهائي."
+  },
+  {
+    q: "..........هي استراتيجية مصممة خصيصاً يتم تنفيذها عبر الوسائط المختلفة من أجل تحقيق النتائج المرجوة مثل زيادة الوعي بالعلامة التجارية وزيادة المبيعات.",
+    options: ["الرسائل النصية", "البريد الإلكتروني", "الحملات الإعلانية", "لا شيء مما سبق"],
+    answer: 2,
+    exp: "الحملات الإعلانية هي الأنشطة الاستراتيجية الممنهجة الموجهة عبر وسائل الإعلام المختلفة للجمهور."
+  },
+  {
+    q: "بيع المنتجات والخدمات من الشركات لشركات أخرى ، يعتبر مثال على ......",
+    options: ["B2B", "B2C", "C2C", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "B2B (Business to Business) يمثل التعاملات والخدمات المتبادلة تجارياً بين المنشآت والشركات وبعضها البعض."
+  },
+  {
+    q: "حملات تحسين محركات البحث هي عبارة عن دورة من الإجراءات المنسقة لتحسين تصنيف محرك البحث لموقع الويب بشكل مجاني.",
+    options: ["SEO", "Search Engine", "SEM", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "SEO (Search Engine Optimization) يختص بتحسين المحتوى وموقع الويب مجاناً ليظهر في أوائل نتائج محركات البحث."
+  },
+  {
+    q: "...... يعرف بأنه ذلك النظام الذي يؤثر ويتأثر بالبيئة التي يعمل فيها بمعنى ان التغيرات في البيئة المحيطة بالنظام تؤثر على مدخلاته ومخرجاته.",
+    options: ["النظام المفتوح", "النظام المغلق", "النظام البسيط", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "النظام المفتوح هو الذي يتبادل الطاقة والموارد والمعلومات في علاقة تفاعلية ديناميكية دائمة مع البيئة."
+  },
+  {
+    q: "......... هو ذلك النظام الذي لا يوجد أي تفاعل بينه وبين البيئة التي يعمل فيها.",
+    options: ["النظام المفتوح", "النظام المغلق", "النظام البسيط", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "النظام المغلق يعزل نفسه كلياً عن أي تأثيرات أو تفاعلات خارجية بيئية."
+  },
+  {
+    q: "...... هي النظم التي تعمل على متابعة و حل مشاكل معينة على أساس تحليل المشكلة المطروحة والوصول إلى البدائل الممكنة لحل المشكلة.",
+    options: ["نظم دعم القرارات DSS", "النظام البسيط", "النظام الخاصة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "نظم دعم القرارات DSS تحلل البيانات والبدائل لمساعدة متخذ القرار في المشاكل شبه المنظمة والمعقدة."
+  },
+  {
+    q: ".......... هي مجموعة من الإجراءات التي تستخدم من أجل انجاز مجموعة من الأعمال اليومية بالمكتب.",
+    options: ["النظم التشغيلية", "النظام البسيط", "النظام الخاصة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "النظم التشغيلية أو الإجراءات التشغيلية تقود ميكنة وتسيير الأعمال اليومية المحددة بالمنظمة."
+  },
+  {
+    q: ".......... هي النظم التي لا يمكن التنبؤ بالحالات التي سيكون عليها إلا باستخدام الاحتمالات والطرق الإحصائية.",
+    options: ["النظم الاحتمالية", "النظام البسيط", "النظام الخاصة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "النظام الاحتمالي تحكمه المتغيرات العشوائية ولا يمكن التنبؤ بمساراته دون استخدام النظرية الإحصائية."
+  },
+  {
+    q: "وحدات .......... مسؤولة عن إرسال البيانات والتعليمات إلى وحدة المعالجة المركزية.",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "وحدات الإدخال تترجم لغة ومشاهدات العالم الخارجي إلى صيغة رقمية يفهمها المعالج."
+  },
+  {
+    q: ".......... مسؤولة عن عرض وإخراج البيانات بعد معالجتها في صورة معلومات مفهومة للمستخدم.",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "وحدات الإخراج تعرض وتنقل البيانات المعالجة رقمياً إلى صيغ يسهل على البشر استيعابها وفهمها."
+  },
+  {
+    q: ".......... مسؤولة عن اجراء العمليات الحسابية والمنطقية داخل الحاسب الآلي.",
+    options: ["وحدة المعالجة المركزية CPU", "الإدخال", "الإخراج", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "وحدة المعالجة المركزية CPU هي العقل المفكر للحاسب والمسؤولة عن الحساب والتحكم والعمليات المنطقية."
+  },
+  {
+    q: "الذاكرة .... هي ذاكرة الوصول العشوائي والتي تقوم بحفظ التعليمات والبرامج بشكل مؤقت وتفقد محتواها عند انقطاع الكهرباء.",
+    options: ["RAM", "ROM", "HDD", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "ذاكرة RAM هي ذاكرة متطايرة مؤقتة للقراءة والكتابة النشطة للبرامج التي تعمل حالياً."
+  },
+  {
+    q: "الذاكرة .... هي ذاكرة القراءة فقط وهي مسؤولة عن تحميل الملفات البرمجية الأساسية لتشغيل الحاسب.",
+    options: ["RAM", "ROM", "HDD", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "ذاكرة ROM ذاكرة صلبة غير متطايرة تحفظ تعليمات الإدخال والإخراج الأساسية BIOS من المصنع مباشرة."
+  },
+  {
+    q: "يصنف الماسح الضوئي Scanner أحد وحدات ..........",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "الماسح الضوئي يحول المستندات الورقية الحقيقية إلى نسخ صور رقمية داخل الحاسب، فهو وحدة إدخال."
+  },
+  {
+    q: "يصنف قارئ الباركود Barcode Reader أحد وحدات ..........",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "قارئ الباركود يستشعر الرموز المطبوعة رقمياً ويدخلها كأرقام ونصوص لقاعدة البيانات، لذا فهو وحدة إدخال."
+  },
+  {
+    q: "يصنف الميكروفون أحد وحدات ..........",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 0,
+    exp: "الميكروفون يلتقط الموجات الصوتية ويرسلها على شكل إشارة رقمية للحاسب، فهو أداة إدخال للملفات الصوتية."
+  },
+  {
+    q: "تصنف السماعات Speakers أحد وحدات ..........",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "السماعات تخرج الإشارات الرقمية على شكل اهتزازات صوتية مسموعة للبشر، لذا تصنف كوحدة إخراج."
+  },
+  {
+    q: "تصنف شاشات الـ Touch screen على انها من ضمن وحدات ..........",
+    options: ["الإدخال فقط", "الإخراج فقط", "المعالجة", "الإدخال والإخراج معاً"],
+    answer: 3,
+    exp: "شاشات اللمس تظهر الصور والبيانات (إخراج) وتستقبل نقرات وتوجيهات أصابع المستخدم (إدخال) في نفس اللحظة."
+  },
+  {
+    q: "كارت الشاشة VGA أحد مكونات الحاسب الآلى ويصنف على انه ضمن وحدات ..........",
+    options: ["الإدخال", "الإخراج", "المعالجة", "لا شيء مما سبق"],
+    answer: 1,
+    exp: "كارت الشاشة يخرج إشارة العرض المرئي والصور لتوجيهها للشاشة، لذا هو وحدة إخراج."
+  },
+  {
+    q: ".......... عبارة عن مجموعة من البرمجيات المصممة لمساعدة المستخدم على إنجاز المهام مثل إنشاء المستندات وقواعد البيانات.",
+    options: ["البرامج التطبيقية", "لغات البرمجة", "نظم التشغيل", "البرامج الخدمية"],
+    answer: 0,
+    exp: "البرامج التطبيقية (Applications) موجهة للمستخدمين مباشرة لتأدية وظائف كالتحرير والكتابة والحساب والمحاسبة."
+  },
+  {
+    q: ".......... وهي مجموعة الأدوات البرمجية التي صُممت لمساعدة مطوري البرمجيات في كتابة البرامج المختلفة وترجمتها.",
+    options: ["البرامج التطبيقية", "لغات البرمجة وأدواتها", "نظم التشغيل", "البرامج الخدمية"],
+    answer: 1,
+    exp: "لغات البرمجة هي الأدوات والوسائل التي يكتب بها المبرمج الأكواد البرمجية لتوجيه الآلة."
+  },
+  {
+    q: ".......... تستخدم للمساعدة في تحليل أداء الكمبيوتر وتأمينه أو صيانته وتكوينه واسترجاع النسخ الاحتياطية.",
+    options: ["البرامج التطبيقية", "لغات البرمجة", "نظم التشغيل", "البرامج الخدمية (Utilities)"],
+    answer: 3,
+    exp: "البرامج الخدمية تساند النظام في عمليات الأمان والصيانة وضغط الملفات والنسخ الاحتياطي."
+  },
+  {
+    q: ".......... هي مجموعة من البرمجيات المسؤولة عن إدارة الموارد (Hardware) والعتاد وتمثل وسيطاً بين المستخدم والحاسب المادي.",
+    options: ["البرامج التطبيقية", "لغات البرمجة", "نظم التشغيل (OS)", "البرامج الخدمية"],
+    answer: 2,
+    exp: "نظام التشغيل (مثل ويندوز أو لينكس) هو عصب البرمجيات المسؤول كلياً عن توجيه وإدارة المكونات المادية وتوفير البيئة لعمل التطبيقات."
+  },
+  {
+    q: ".......... يقوم بترجمة سطر سطر أو فقرة فقرة من الكود البرمجي لـ لغة الآلة مباشرة أثناء التشغيل.",
+    options: ["المفسر Interpreter", "المترجم Compiler", "نظم التشغيل", "البرامج الخدمية"],
+    answer: 0,
+    exp: "المفسر يقرأ الكود البرمجي سطر بسطر وينفذه فوراً، بعكس المترجم الذي يحول الملف بالكامل دفعة واحدة."
+  }
+];
+
+// --- BANCO OF TRUE / FALSE (100 Total) ---
+const rawTF = [
+  {
+    q: "النظام هو مجموعة مترابطة ومتجانسة من الموارد والعناصر التي تتفاعل مع بعضها البعض داخل إطار معين؟",
+    answer: true,
+    exp: "العبارة صحيحة. هذا هو التعريف الأكاديمي الأساسي للنظام الإداري والتقني."
+  },
+  {
+    q: "النظم الاصطناعية هي النظم التي لا دخل للإنسان في وجودها مثل الكون والشمس والقمر والأمطار؟",
+    answer: false,
+    exp: "العبارة خاطئة. النظم التي لا دخل للإنسان في وجودها هي النظم الطبيعية، وليست الاصطناعية."
+  },
+  {
+    q: "يعرف النظام الطبيعي بأنه النظام الذي لا دخل للإنسان في وجوده مثل الإنسان نفسه والكون والشمس والأمطار؟",
+    answer: true,
+    exp: "العبارة صحيحة. النظم الطبيعية من صنع الخالق سبحانه وتعالى."
+  },
+  {
+    q: "النظام المفتوح Open Systems يعرف بأنه ذلك النظام الذي يؤثر ويتأثر بالبيئة التي يعمل فيها؟",
+    answer: true,
+    exp: "العبارة صحيحة. يعيش في بيئة مفتوحة ويتبادل المدخلات والمخرجات كالمؤسسات الاقتصادية."
+  },
+  {
+    q: "النظام الطبيعي يعرف بأنه ذلك النظام الذي يؤثر ويتأثر بالبيئة التي يعمل فيها؟",
+    answer: false,
+    exp: "العبارة خاطئة. النظام الذي يتفاعل ويؤثر ويتأثر بالبيئة تعريفه العلمي والعملي هو النظام المفتوح."
+  },
+  {
+    q: "النظام المغلق Closed هو ذلك النظام الذي لا يوجد أي تفاعل بينه وبين البيئة التي يعمل فيها؟",
+    answer: true,
+    exp: "العبارة صحيحة. مغلق تماماً ويدور في حلقة معزولة ذاتياً دون تأثر بالمحيط."
+  },
+  {
+    q: "النظام المغلق Closed هو ذلك النظام الذي يحتوي على تفاعل مستمر ومباشر بينه وبين البيئة الخارجية؟",
+    answer: false,
+    exp: "العبارة خاطئة. النظام المغلق لا يحتوي على أي تفاعلات خارجية على الإطلاق."
+  },
+  {
+    q: "النظام المفتوح هو ذلك النظام الذي يحتوي على تفاعل بينه وبين البيئة التي يعمل فيها؟",
+    answer: true,
+    exp: "العبارة صحيحة. التبادل والتفاعل المستمران هما سر البقاء للنظام المفتوح."
+  },
+  {
+    q: "النظم التشغيلية هي نظم تحتوي على تفاعل بينها وبين البيئة الخارجية كخاصية أساسية للتعريف بها؟",
+    answer: false,
+    exp: "العبارة خاطئة. التفاعل والتبادل مع البيئة يخص تعريف النظم المفتوحة، بينما النظم التشغيلية تخص إنجاز الأعمال اليومية الروتينية."
+  },
+  {
+    q: "نظم تشغيلية Operational Systems هي عبارة عن النظم التي تعمل على إنجاز عمل محدد؟",
+    answer: true,
+    exp: "العبارة صحيحة. ترتبط مباشرة بميكنة وإجراءات المهام اليومية المحددة بالعمل."
+  },
+  {
+    q: "النظم البسيطة هي تلك النظم التي تحتوي على علاقات متداخلة ومعقدة يصعب حلها وتفصيلها؟",
+    answer: false,
+    exp: "العبارة خاطئة. العلاقات المتداخلة والمعقدة تميز النظم المعقدة Complex وليست البسيطة."
+  },
+  {
+    q: "النظم المعقدة Complex هي تلك النظم التي تحتوي على علاقات متداخلة وصعبة التحليل بيسر؟",
+    answer: true,
+    exp: "العبارة صحيحة. هذا هو الطابع العام للنظم المعقدة والمتشابكة هيكلياً."
+  },
+  {
+    q: "النظم الاحتمالية هي النظم التي يمكن التنبؤ بالحالات التي سيكون عليها بسهولة ولا تحتاج إلى طرق إحصائية؟",
+    answer: false,
+    exp: "العبارة خاطئة. النظم المحددة/المؤكدة هي التي يمكن التنبؤ بها بسهولة، بينما الاحتمالية تحتاج حتماً لطرق وأدوات إحصائية للتنبؤ."
+  },
+  {
+    q: "النظم الاحتمالية هي النظم التي يمكن التنبؤ بها باستخدام الطرق الإحصائية لتواجد العشوائية فيها؟",
+    answer: true,
+    exp: "العبارة صحيحة. الاحتمالات والإحصاء هما السند الرياضي لدراسة سلوك النظم الاحتمالية كالبورصة."
+  },
+  {
+    q: "المعلومات هي حقائق خام أو معارف خاصة بموضوع محدد ويمكن تسجيلها وتخزينها على أجهزة الحاسب قبل المعالجة؟",
+    answer: false,
+    exp: "العبارة خاطئة. الحقائق الخام التي لم تعالج بعد هي البيانات (Data) وليست المعلومات."
+  },
+  {
+    q: "البيانات هي حقائق خام أو معارف خاصة بموضوع محدد ويمكن تسجيلها وتخزينها علي أجهزة الحاسب؟",
+    answer: true,
+    exp: "العبارة صحيحة. البيانات تمثل الأحداث والمدخلات الأولية غير المنظمة قبل تعرضها لعمليات التنسيق والمعالجة."
+  },
+  {
+    q: "الـ Byte يحتوي على عدد 16 بت؟",
+    answer: false,
+    exp: "العبارة خاطئة. البايت يحتوي رياضياً وتقنياً على 8 بت (Bits) فقط."
+  },
+  {
+    q: "الـ Byte كقيمة ومساحة أكبر من الـ Megabyte؟",
+    answer: false,
+    exp: "العبارة خاطئة. الميجابايت تساوي 1024 كيلوبايت والكيلوبايت 1024 بايت، فالميجابايت أكبر بكثير."
+  },
+  {
+    q: "الـ Terabyte أكبر من الـ Megabyte؟",
+    answer: true,
+    exp: "العبارة صحيحة. التيرابايت مساحة تخزين هائلة تعادل ملايين الميجابايتات."
+  },
+  {
+    q: "المعلومات هي نتيجة معالجة البيانات والتي يمكن استخدامها والاعتماد عليها في اتخاذ القرارات؟",
+    answer: true,
+    exp: "العبارة صحيحة. المعالجة تعيد تنظيم وترجمة البيانات وتحولها لمعلومات تخدم صناعة القرار."
+  },
+  {
+    q: "نظم المعلومات الإدارية تحتوي على تقارير دورية وتقارير خاصة؟",
+    answer: true,
+    exp: "العبارة صحيحة. تجمع MIS بين التقارير الدورية (Periodic) والتقارير الاستثنائية والخاصة عند طلب المديرين."
+  },
+  {
+    q: "تقارير المخزون الشهرية تصنف على أنها تقارير دورية Periodic Reports؟",
+    answer: true,
+    exp: "العبارة صحيحة. تصدر بانتظام على فترات زمنية معلومة ومستقرة (كل شهر)."
+  },
+  {
+    q: "تقارير المرتبات الشهرية تصنف على أنها تقارير خاصة وليست دورية؟",
+    answer: false,
+    exp: "العبارة خاطئة. تقارير المرتبات تصدر بانتظام واستقرار شهرياً، لذا هي تقارير دورية أساساً."
+  },
+  {
+    q: "تساعد نظم المعلومات الإدارية في تحسين الكفاءة التشغيلية للمؤسسة؟",
+    answer: true,
+    exp: "العبارة صحيحة. من خلال توفير دقة المعلومات وتسريع تدفق المعاملات ودعم المديرين تكتيكياً."
+  },
+  {
+    q: "مصطلح الـ TPS يشير الى نظم معالجة العمليات؟",
+    answer: true,
+    exp: "العبارة صحيحة. TPS اختصار لـ Transaction Processing Systems المسؤولة عن العمليات التشغيلية."
+  },
+  {
+    q: "مصطلح الـ MIS يشير الى نظم معالجة العمليات؟",
+    answer: false,
+    exp: "العبارة خاطئة. MIS تشير إلى نظم المعلومات الإدارية Management Information Systems، بينما معالجة العمليات هي TPS."
+  },
+  {
+    q: "أنظمة دعم القرارات DSS هي عبارة عن أنظمة معلومات تساعد في تحليل الاعمال اليومية الروتينية المستقرة؟",
+    answer: false,
+    exp: "العبارة خاطئة. الـ DSS تساعد في اتخاذ القرارات شبه المهيكلة وغير الروتينية، أما الأعمال الروتينية اليومية فتخص الـ TPS."
+  },
+  {
+    q: "وفقاً لما درسته في مقرر نظم المعلومات الإدارية يحتوي الهرم المعلوماتي في المنظمات على خمس مستويات مختلفة؟",
+    answer: false,
+    exp: "العبارة خاطئة. يحتوي هيكلياً على 3 مستويات رئيسية: المستوى التشغيلي، المستوى التكتيكي/المعرفي، والمستوى الإستراتيجي الأعلى."
+  },
+  {
+    q: "نظم الـ TPS تستخدم في دعم الادارة العليا بالقرارات الاستراتيجية الضرورية والهامة؟",
+    answer: false,
+    exp: "العبارة خاطئة. الـ TPS لخدمة الموظفين والمستوى التشغيلي الأدنى بالشركة، والقرارات الإستراتيجية تخص نظم ESS و DSS."
+  },
+  {
+    q: "لا يوجد اختلاف حقيقي بين كلا من البيانات والمعلومات؟",
+    answer: false,
+    exp: "العبارة خاطئة. هناك فرق جوهري؛ فالبيانات مادة خام أولية، والمعلومات مادة معالجة ومفيدة مباشرة للقرار."
+  },
+  {
+    q: "البرمجيات هي سلسلة من التعليمات المكتوبة بطريقة معينة بهدف إيجاد حل لمشكلة محددة باستخدام الحاسب؟",
+    answer: true,
+    exp: "العبارة صحيحة. البرامج التطبيقية أو أنظمة البرمجة هي كتل تعليمية لحل وعلاج المشكلات رقمياً."
+  },
+  {
+    q: "المصنف Book عبارة عن ملف في برنامج Excel ويحتوي على مجموعة من أوراق العمل Worksheets؟",
+    answer: true,
+    exp: "العبارة صحيحة. الملف الأساسي في إكسيل يسمى Workbook (المصنف) ويضم أوراق العمل التابعة له."
+  },
+  {
+    q: "الخلايا في برنامج Excel هي عبارة عن مجموعة من أوراق العمل Worksheets المتجاورة؟",
+    answer: false,
+    exp: "العبارة خاطئة. الخلايا هي نقطة تقاطع وحصيلة التلاقي بين الصفوف والأعمدة داخل ورقة العمل الواحدة."
+  },
+  {
+    q: "الأعمدة Columns هي مجموعة الخلايا التي تترتب عمودياً في الجدول ويشار إليها بالحروف الهجائية؟",
+    answer: true,
+    exp: "العبارة صحيحة. تبدأ بالحروف (A, B, C...) وتأتي بتنسيق عمودي صاعد هابط."
+  },
+  {
+    q: "الصفوف Rows هي مجموعة الخلايا التي تترتب أفقياً في الجدول ويشار إليها بالحروف الهجائية أيضاً؟",
+    answer: false,
+    exp: "العبارة خاطئة. الصفوف تترتب أفقياً ولكن يشار إليها بالأرقام الحسابية (1, 2, 3...) وليس الحروف."
+  },
+  {
+    q: "الصفوف Rows هي مجموعة الخلايا التي تترتب أفقياً في الجدول ويشار إليها بالأرقام؟",
+    answer: true,
+    exp: "العبارة صحيحة. الأرقام هي العنوان المعياري لتحديد الصفوف في كافة برامج التداول الحسابي."
+  },
+  {
+    q: "الدالة COUNT() تستخدم لحساب عدد الخلايا التي تحتوي على أرقام وحروف معاً؟",
+    answer: false,
+    exp: "العبارة خاطئة. الدالة COUNT() تعد وتحسب فقط الخلايا التي بها قيم رقمية وتستثني النصوص تماماً."
+  },
+  {
+    q: "الدالة COUNT() تستخدم لحساب عدد الخلايا التي تحتوي على أرقام فقط؟",
+    answer: true,
+    exp: "العبارة صحيحة. وظيفتها تقتصر تماماً على حصر الخلايا ذات المحتوى الحسابي الرقمي."
+  },
+  {
+    q: "الدالة COUNTA() تستخدم لحساب عدد الخلايا التي تحتوي على أرقام فقط؟",
+    answer: false,
+    exp: "العبارة خاطئة. دالة COUNTA() تحسب الخلايا غير الفارغة أياً كان محتواها (أرقام أو حروف أو نصوص)."
+  },
+  {
+    q: "الدالة COUNTA() تستخدم لحساب عدد الخلايا الغير فارغة؟",
+    answer: true,
+    exp: "العبارة صحيحة. تجمع وتعد كل خلية بها مدخل أو بيان وتتجاهل فقط الخلايا الفارغة كلياً."
+  },
+  {
+    q: "الدالة AVERAGE() تستخدم لحساب متوسط القيم الحسابية في إكسيل؟",
+    answer: true,
+    exp: "العبارة صحيحة. تجمع نطاق الخلايا المحدد وتقسم الإجمالي على عددها آلياً."
+  },
+  {
+    q: "التنسيق الشرطي Conditional Formatting في اكسيل يستخدم لتنسيق الخلايا وفقاً لشروط محددة؟",
+    answer: true,
+    exp: "العبارة صحيحة. يعيد تلوين أو إبراز الخلايا تلقائياً بمجرد مطابقة قيمتها للشرط المرغوب."
+  },
+  {
+    q: "الدالة MAX() تستخدم لإيجاد أصغر قيمة في برنامج اكسيل؟",
+    answer: false,
+    exp: "العبارة خاطئة. الدالة MAX() توجد أكبر قيمة في نطاق الخلايا، بينما أصغر قيمة تأتي عبر الدالة MIN()."
+  },
+  {
+    q: "الدالة MIN() تستخدم لإيجاد أصغر قيمة في برنامج اكسيل؟",
+    answer: true,
+    exp: "العبارة صحيحة. وظيفتها استخراج النهاية الصغرى أو القيمة الأدنى في نطاق محدد."
+  },
+  {
+    q: "يوجد علاقة وثيقة ومباشرة بين كلاً من نظم المعلومات الإدارية ونظم المعلومات المحاسبية؟",
+    answer: true,
+    exp: "العبارة صحيحة. نظم المعلومات المحاسبية تعتبر نظاماً فرعياً هاماً يغذي النظم الإدارية الكلية بالمنظمة بالبيانات المالية."
+  },
+  {
+    q: "يمكن إعداد الميزانية المالية وتصويرها بالكامل باستخدام برنامج اكسيل؟",
+    answer: true,
+    exp: "العبارة صحيحة. يوفر إكسيل كافة أدوات التصنيف والدوال الحسابية لبناء القوائم المالية والميزانيات العمومية."
+  },
+  {
+    q: "الدالة IF من الدالات الأكثر شيوعاً في اكسيل والتي تتيح إجراء مقارنات منطقية وإرجاع نتائج شرطية؟",
+    answer: true,
+    exp: "العبارة صحيحة. دالة الشرط الأشهر لاتخاذ القرارات وإعطاء مخرجات متباينة بناء على تحقق الشرط."
+  },
+  {
+    q: "الامر الـ Merge Cells يستخدم لدمج الخلايا في تطبيق اكسيل لتتحول لخلية واحدة؟",
+    answer: true,
+    exp: "العبارة صحيحة. هذا هو الاستخدام الدقيق لدمج النطاقات لإعداد العناوين الكبرى للجداول."
+  },
+  {
+    q: "الامر الـ Merge Cells يستخدم لترتيب وفرز الخلايا تصاعدياً أو تنازلياً في تطبيق اكسيل؟",
+    answer: false,
+    exp: "العبارة خاطئة. الدمج (Merge) يوحد الخلايا، أما الترتيب والفرز فيتم باستخدام الأداة Sort."
+  },
+  {
+    q: "التنسيق الشرطى sort فى اكسيل يستخدم لتنسيق وتلوين الخلايا وفقا لشروط مسبقة؟",
+    answer: false,
+    exp: "العبارة خاطئة. Sort تعني الفرز والترتيب، وتنسيق الخلايا الشرطي هو Conditional Formatting."
+  },
+  {
+    q: "المترجم Compiler يستخدم لتحليل وترجمة البرنامج بالكامل مرة واحدة ثم يترجمه كاملا إلى لغة الآلة؟",
+    answer: true,
+    exp: "العبارة صحيحة. يقوم بالترجمة التجميعية لكامل الملف البرمجي دفعة واحدة."
+  },
+  {
+    q: "المفسر Interpreter يستخدم لترجمة البرنامج بالكامل مرة واحدة ومراجعة الأخطاء بعد الترجمة الكاملة؟",
+    answer: false,
+    exp: "العبارة خاطئة. المفسر يترجم وينفذ الكود سطر بسطر أو فقرة فقرة أثناء التشغيل الفعلي."
+  },
+  {
+    q: "المفسر Interpreter يستخدم لترجمة البرنامج سطر سطر أو فقرة فقرة؟",
+    answer: true,
+    exp: "العبارة صحيحة. يعتمد المفسر على التتبع والترجمة الفورية للأسطر البرمجية خطوة بخطوة."
+  },
+  {
+    q: "المترجم Compiler يستخدم لترجمة البرنامج سطر سطر أو فقرة فقرة؟",
+    answer: false,
+    exp: "العبارة خاطئة. المترجم يحول المشروع البرمجي كاملاً في عملية معالجة واحدة مسبقة."
+  },
+  {
+    q: "لا يوجد إختلاف بين كلا من المترجم والمفسر في معالجة لغات البرمجة وحجم الملفات الناتجة؟",
+    answer: false,
+    exp: "العبارة خاطئة. الاختلاف جوهري في آلية العمل، والسرعة، وطريقة تتبع واكتشاف الأخطاء البرمجية."
+  },
+  {
+    q: "المتغير score يحتوى على القيمة 90 فإن نوع البيانات المناسب برمجياً يكون Integer؟",
+    answer: true,
+    exp: "العبارة صحيحة. الرقم 90 عدد صحيح بدون كسر عشري، لذا يناسبه المتغير الصحيح Integer."
+  },
+  {
+    q: "المتغير score يحتوى على القيمة 75.95 فإن نوع البيانات المناسب يكون Integer؟",
+    answer: false,
+    exp: "العبارة خاطئة. القيمة تحتوي على كسر عشري، لذا النوع المناسب هو Double أو Float وليس Integer."
+  },
+  {
+    q: "المتغير FirstName يحتوى على القيمة 'Gilea' فإن نوع البيانات المناسب برمجياً يكون Integer؟",
+    answer: false,
+    exp: "العبارة خاطئة. القيمة نصية وتتكون من حروف، لذا نوع البيانات الملائم هو String."
+  },
+  {
+    q: "المتغير FirstName يحتوى على القيمة 'Gilea' فإن نوع البيانات المناسب يكون String؟",
+    answer: true,
+    exp: "العبارة صحيحة. النصوص والسلاسل الحرفية تمثل وتخزن في متغيرات من النوع String."
+  },
+  {
+    q: "المتغير Pass يحتوى على القيمة True فإن نوع البيانات المناسب يكون String؟",
+    answer: false,
+    exp: "العبارة خاطئة. القيمة True تعبر عن حالة منطقية، لذا نوع البيانات المناسب هو Boolean وليس String."
+  },
+  {
+    q: "المتغير Pass يحتوى على القيمة True فإن نوع البيانات المناسب يكون Boolean؟",
+    answer: true,
+    exp: "العبارة صحيحة. النوع Boolean يدعم تخزين الحالات والمنطقيات الثنائية فقط (True/False)."
+  },
+  {
+    q: "الثوابت Constants في لغة الجافا هي مكان في الذاكرة يحتوى على قيم تتغير بكثرة اثناء تشغيل البرنامج؟",
+    answer: false,
+    exp: "العبارة خاطئة. الثوابت قيمها ثابتة ومستقرة تماماً ولا تتغير أبداً أثناء التشغيل بعد تحديدها لأول مرة."
+  },
+  {
+    q: "المتغيرات Variables في لغة الجافا هي مكان في الذاكرة يحتوى على قيم تتغير اثناء تشغيل البرنامج؟",
+    answer: true,
+    exp: "العبارة صحيحة. المتغيرات تخصص مساحات تخزين مرنة قابلة للتعديل والتبديل وفقاً لمسارات تشغيل الكود."
+  },
+  {
+    q: "الجملة final int Area = 41 تشير للاعلان عن متغير من النوع الكسرى القابل للتغيير؟",
+    answer: false,
+    exp: "العبارة خاطئة. استخدام final يجعل القيمة ثابتة وغير قابلة للتغيير، و int يشير لعدد صحيح وليس كسرى."
+  },
+  {
+    q: "لطباعة جملة بلغة الجافا نستخدم الامر System.In.Print()؟",
+    answer: false,
+    exp: "العبارة خاطئة. نستخدم كود الإخراج المعياري System.out.print()، بينما System.in يستخدم للاستقبال والإدخال."
+  },
+  {
+    q: "لطباعة جملة بلغة الجافا نستخدم الامر System.Out.Print()؟",
+    answer: true,
+    exp: "العبارة صحيحة. هو أمر الطباعة القياسي لعرض المخرجات على كونسول التشغيل بالجافا."
+  },
+  {
+    q: "نتيجة الجملة System.Out.Print(5%2) تكون 1؟",
+    answer: true,
+    exp: "العبارة صحيحة. الرقم 5 مقسوماً على 2 يساوي 2 ويتبقى 1، وباقي القسمة هو 1."
+  },
+  {
+    q: "نتيجة الجملة System.Out.Print(4%2) تكون 1؟",
+    answer: false,
+    exp: "العبارة خاطئة. الرقم 4 يقبل القسمة على 2 تماماً دون وجود أي باقٍ، لذا النتيجة هي 0 وليست 1."
+  },
+  {
+    q: "الأمر Double.parseDouble يستخدم لتحويل القيم النصية الى قيم صحيحة لا تحتوي على أي كسور؟",
+    answer: false,
+    exp: "العبارة خاطئة. يحول القيم النصية إلى قيم عشرية وكسرية من النوع Double، بينما التحويل لعدد صحيح يتم عبر Integer.parseInt."
+  },
+  {
+    q: "السحابة عامة Public Cloud هي وحدة تخزين عامية والتي تحتوى على خدمات البيانات بشكل مفتوح ومتاحة لجميع الفئات؟",
+    answer: true,
+    exp: "العبارة صحيحة. تدار عبر جهات خارجية وتوفر الموارد التخزينية والخدمات لمختلف المشتركين عبر الإنترنت."
+  },
+  {
+    q: "المكونات المادية هي المكونات الفعلية لجهاز الحاسوب التي يمكن مشاهدتها و لمسها بوضوح؟",
+    answer: true,
+    exp: "العبارة صحيحة. تسمى Hardware وتشمل القطع والأجهزة والمكونات الصلبة الملموسة."
+  },
+  {
+    q: "قارئ رمز الاستجابة السريع Quick Response code هو أحد وحدات الإخراج الهامة في الحاسب؟",
+    answer: false,
+    exp: "العبارة خاطئة. قارئ الـ QR هو وحدة إدخال (Input Unit) تقرأ وتستقبل الرموز وتترجمها للداخل."
+  },
+  {
+    q: "قارئ العلامات البصرية OMR Reader هو أحد وحدات الإدخال في الحاسب؟",
+    answer: true,
+    exp: "العبارة صحيحة. يمسح ويستشعر علامات الاختيارات (مثل ورقة بابل شيت التقييمية) ويدخل النتائج."
+  },
+  {
+    q: "طابعات الـ Ink jet تستخدم في طباعة المستندات والصور بشكل اسرع من طابعات الليزر؟",
+    answer: false,
+    exp: "العبارة خاطئة. طابعات الليزر هي الأسرع والأكثر كفاءة في إخراج وطباعة الأوراق والمستندات بإنتاجية ضخمة."
+  },
+  {
+    q: "تستخدم الطابعات النقطية في طباعة الرسوم والمستندات الحديثة التي تحتوي على ألوان معقدة وتدرجات؟",
+    answer: false,
+    exp: "العبارة خاطئة. الطابعات النقطية قديمة وتستخدم عادة لطباعة النصوص الورقية البسيطة والفواتير بالكربون."
+  },
+  {
+    q: "قارئ الباركود (أو ماسح الباركود) هو ماسح ضوئي يمكنه قراءة الرموز الشريطية المطبوعة وإحالتها للذاكرة؟",
+    answer: true,
+    exp: "العبارة صحيحة. يحول الرموز والخطوط السوداء المتجاورة إلى قيم نصية ورقمية داخل قاعدة البيانات."
+  },
+  {
+    q: "الذاكرة ROM هي ذاكرة قراءة وكتابة وتعديل حر للبيانات أثناء التشغيل؟",
+    answer: false,
+    exp: "العبارة خاطئة. ذاكرة ROM هي ذاكرة قراءة فقط (Read Only Memory) مبرمجة مسبقاً من المصنع."
+  },
+  {
+    q: "الذاكرة RAM هي ذاكرة قراءة وكتابة مرنة وتأخذ بياناتها مباشرة من المعالج وتطبيقات التشغيل؟",
+    answer: true,
+    exp: "العبارة صحيحة. الذاكرة النشطة للحاسب والتي تدعم عمليات القراءة البرمجية وتعديل البيانات وحفظها مؤقتاً."
+  },
+  {
+    q: "وحدة المعالجة المركزية CPU تستخدم لمعالجة البيانات التي تم إدخالها بواسطة أجهزة الإدخال المتنوعة؟",
+    answer: true,
+    exp: "العبارة صحيحة. عصب الحاسب المسئول عن استقبال البيانات والبدء في تشغيلها ومعالجتها لإظهارها كمخرجات."
+  },
+  {
+    q: "برمجيات الحاسب عبارة عن مجموعة من البرامج التي تساعد على الاتصال بأجهزة الكمبيوتر وتيسير أعمال المستخدم؟",
+    answer: true,
+    exp: "العبارة صحيحة. تمثل الواجهة البرمجية لتسخير طاقة وقدرات المكونات المادية لراحة ومساعدة المستخدمين."
+  },
+  {
+    q: "نظم التشغيل (Operating Systems (OS هي مجموعة من البرمجيات المسؤولة عن إدارة الموارد (Hardware) وبرمجيات الحاسب؟",
+    answer: true,
+    exp: "العبارة صحيحة. نظام التشغيل يقود ويدير توزيع موارد الذاكرة والعتاد والمعالج والملفات وتأمينها بالكامل."
+  },
+  {
+    q: "الشبكات المحلية LAN هي شبكة محلية يتم تركيبها في مبنى واحد أو مبنيان ذات مسافة قريبة جدا وهي تستخدم لربط أجهزة الحاسوب داخل المنشأة؟",
+    answer: true,
+    exp: "العبارة صحيحة. LAN تعني Local Area Network وتقتصر على مساحات جغرافية محدودة ومتقاربة."
+  },
+  {
+    q: "الإنترنت World Wide Web (WWW) هي نظام اتصالات عالمي يسمح بتبادل المعلومات بين الشبكات على مستوى العالم؟",
+    answer: true,
+    exp: "العبارة صحيحة. الشبكة العنكبوتية العالمية التي تربط كافة الاتصالات والبيانات الرقمية دولياً."
+  },
+  {
+    q: "تتميز شبكات الجيل الخامس بسرعة فائقة جداً في نقل البيانات ومعدلات استجابة متدنية مقارنة بالشبكات السابقة؟",
+    answer: true,
+    exp: "العبارة صحيحة. توفر طفرة هائلة في مستويات سرعة نقل وتحميل البيانات وتقنيات الاتصال المعاصر."
+  },
+  {
+    q: "شبكات الإنترانت Intranet هي شبكة داخلية تستخدم اساليب الحماية والخصوصية التامة داخل حدود المؤسسة فقط؟",
+    answer: true,
+    exp: "العبارة صحيحة. شبكة مقيدة ومؤمنة مخصصة لموظفي المنشأة الداخليين ولا يمكن لعموم الناس الولوج إليها."
+  },
+  {
+    q: "نظم ادارة قواعد البيانات هي مجموعة من البرامج التي يتم من خلالها إنشاء ومعالجة قواعد البيانات؟",
+    answer: true,
+    exp: "العبارة صحيحة. تسمى DBMS وتوفر البيئة البرمجية المتكاملة لتنظيم وإضافة وتحديث الجداول وقواعد البيانات."
+  },
+  {
+    q: "مدير قواعد البيانات DB Administrator مسئول عن بناء وتصميم جداول قواعد البيانات من الصفر تبعاً لرغبة المستخدم؟",
+    answer: false,
+    exp: "العبارة خاطئة. المسئول عن التصميم والإنشاء الأولي للجداول والعلاقات هو مصمم قواعد البيانات Database Designer، بينما مدير قواعد البيانات DBA مسئول عن التشغيل والصلاحيات والأمان والصيانة الفنية اليومية."
+  },
+  {
+    q: "مستودع البيانات Data-Warehouse هو نوع من قواعد البيانات التي تحتوي على كم هائل من البيانات بهدف المساعدة في إتخاذ القرارات داخل المؤسسة؟",
+    answer: true,
+    exp: "العبارة صحيحة. يجمع البيانات التاريخية للمؤسسة من مصادر متعددة ومختلفة لدعم أصحاب القرار بالتقارير."
+  },
+  {
+    q: "تقنيات التنقيب والتحليل الفورية الحديثة للبيانات OLAP هي تقنية قوية للتخطيط وإكتشاف البيانات وعرض التقارير والحسابات التحليلية المعقدة؟",
+    answer: true,
+    exp: "العبارة صحيحة. تساند المعالجة التحليلية الفورية واستنتاج العلاقات المركبة من مخازن البيانات."
+  },
+  {
+    q: "تشير البيانات الضخمة Big Data إلى مجموعات كبيرة ومتنوعة من المعلومات التي تنمو بمعدلات متزايدة وسرعات فائقة باستمرار؟",
+    answer: true,
+    exp: "العبارة صحيحة. البيانات العملاقة التي تتجاوز في حجمها وسرعة تولدها قدرات قواعد البيانات العادية والتقليدية."
+  },
+  {
+    q: "تتمثل الخصائص الاساسية للبيانات الضخمة في خمسة أبعاد: الحجم، السرعة، التنوع، المصداقية، القيمة؟",
+    answer: true,
+    exp: "العبارة صحيحة. وهي الخصائص المعيارية الخمسة (5Vs) المعترف بها علمياً للبيانات الضخمة."
+  },
+  {
+    q: "يمكن جمع البيانات الضخمة Big Data من التعليقات ومشاركات الوسائط العامة التي تتم مشاركتها بشكل عام على الشبكات الاجتماعية ومواقع الويب؟",
+    answer: true,
+    exp: "العبارة صحيحة. وتعتبر وسائل التواصل والتعليقات والمنصات التفاعلية مغذياً رئيسياً للبيانات الكبرى غير المنظمة."
+  },
+  {
+    q: "امكانية تحليل البيانات وأتخاذ القرارات الادارية الاستراتيجية تعتبر من السمات والاهداف الاساسية لمستودعات البيانات؟",
+    answer: true,
+    exp: "العبارة صحيحة. مستودعات البيانات تبنى أساساً لمساندة ودعم عمليات اتخاذ القرار وليس فقط الحفظ."
+  },
+  {
+    q: "أنظمة دعم القرارات DSS تتعلق دائماً بالقرارات اليومية والروتينية وشبه الروتينية المستقرة بالشركة؟",
+    answer: true,
+    exp: "العبارة صحيحة. (تخدم بصفة رئيسية القرارات شبه المنظمة أو شبه الروتينية لمساعدة المديرين في المفاضلة والتحليل المتقدم)."
+  },
+  {
+    q: "نظم إدارة المعرفة KMS يقع تكتيكياً وهيكلياً مابين المستوى التشغيلي TPS والمستوى الاداري MIS؟",
+    answer: true,
+    exp: "العبارة صحيحة. يساعد في توفير وجمع وتبادل المعرفة والخبرات بين المستويات التنظيمية المختلفة بالمنظمة."
+  },
+  {
+    q: "أنظمة ميكنة المكاتب OAS تعمل على تحويل انشطة المكاتب والاتصالات من الطريقه اليدويه التقليدية الى إستخدام الكمبيوتر؟",
+    answer: true,
+    exp: "العبارة صحيحة. توفر معالجة الكلمات والبريد والمفكرات والجدولة لإنهاء الأعمال المكتبية إلكترونياً."
+  },
+  {
+    q: "نظام تخطيط موارد المؤسسة ERP هو عبارة عن برنامج لإدارة العمليات التجارية، والذي يسمح للمؤسسة باستخدام نظام تطبيقات متكامل وموحد لإدارة أعمالها؟",
+    answer: true,
+    exp: "العبارة صحيحة. يهدف للقضاء على جزر المعلومات المنفصلة داخل المنشأة ويوحدها بالكامل."
+  },
+  {
+    q: "نظم سلاسل الإمدادات SCM تستخدم لدعم وإدارة متابعة طلبات العملاء الفردية، وعمليات التسعير اليومي، والفواتير المالية؟",
+    answer: false,
+    exp: "العبارة خاطئة. متابعة طلبات وتفضيلات وتسعير العملاء وفواتيرهم هي مهمة نظم إدارة العلاقات CRM أو المبيعات، بينما سلاسل الإمداد SCM تعنى بإدارة تدفق المواد والبضائع والخدمات من المورد للمصنع ثم المستهلك."
+  },
+  {
+    q: "إدارة علاقات العملاء (CRM) عبارة عن مجموعة من الانظمة المتكاملة القائمة على البيانات والتي تساعد في إدارة المعلومات المتعلقة بالعملاء الحاليين والمحتملين وتتبعها وتخزينها؟",
+    answer: true,
+    exp: "العبارة صحيحة. هذا هو التعريف الأكاديمي الدقيق لنظم الـ CRM المحورية بالشركات."
+  },
+  {
+    q: "مصطلح الـ CLTV يشير الى قيمة عمر العميل للشركة والتي تستند على العلاقة بين الإيرادات المتوقعة التي ينتجها عميل معين على المدى الطويل؟",
+    answer: true,
+    exp: "العبارة صحيحة. CLTV تعني Customer Lifetime Value وتساعد الإدارة في تمييز العملاء الأكثر ربحية للاحتفاظ بهم."
+  }
+];
+
+// --- APP STATE MANAGEMENT ---
+let activeTab = 'study';
+let currentExamQuestions = [];
+
+function switchTab(tabId) {
+  // Hide all contents
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  
+  // Show target
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+  const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+  if (targetBtn) targetBtn.classList.add('active');
+  
+  activeTab = tabId;
+  scrollToTop();
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- SHUFFLE FUNCTION ---
+function shuffleArray(array) {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}
+
+// --- GENERATE AND START EXAM ---
+function generateAndStartExam() {
+  // Reset Results board
+  document.getElementById('results-board').style.display = 'none';
+  
+  // Select 15 Random MCQs
+  const shuffledMCQs = shuffleArray([...rawMCQ]);
+  const selectedMCQs = shuffledMCQs.slice(0, 15);
+  
+  // Select 15 Random T/F
+  const shuffledTFs = shuffleArray([...rawTF]);
+  const selectedTFs = shuffledTFs.slice(0, 15);
+  
+  // Build Exam Dataset
+  currentExamQuestions = [];
+  
+  // Pack MCQ
+  selectedMCQs.forEach((item, index) => {
+    currentExamQuestions.push({
+      type: 'mcq',
+      num: index + 1,
+      qText: item.q,
+      options: item.options,
+      correctIdx: item.answer,
+      userAnswer: null, // index selected
+      explanation: item.exp
+    });
+  });
+  
+  // Pack TF
+  selectedTFs.forEach((item, index) => {
+    currentExamQuestions.push({
+      type: 'tf',
+      num: index + 16,
+      qText: item.q,
+      correctVal: item.answer,
+      userAnswer: null, // true or false
+      explanation: item.exp
+    });
+  });
+  
+  // Render Questions into Container
+  renderExamQuestions();
+  
+  // Switch Views
+  document.getElementById('exam-intro-view').style.display = 'none';
+  document.getElementById('exam-playground-view').style.display = 'block';
+  document.getElementById('submit-exam-btn').style.display = 'inline-block';
+  
+  scrollToTop();
+}
+
+function renderExamQuestions() {
+  const container = document.getElementById('exam-questions-container');
+  container.innerHTML = '';
+  
+  // Section MCQ Header
+  const mcqHeader = document.createElement('h3');
+  mcqHeader.className = 'quiz-section-title';
+  mcqHeader.textContent = '📝 القسم الأول: أسئلة الاختيار من متعدد (15 سؤالاً)';
+  container.appendChild(mcqHeader);
+  
+  currentExamQuestions.forEach((q, globalIdx) => {
+    if (q.type === 'mcq') {
+      const qCard = document.createElement('div');
+      qCard.className = 'q-card';
+      qCard.id = `q-card-${globalIdx}`;
+      qCard.innerHTML = `
+        <div class="q-num">سؤال رقم ${q.num} <span class="badge badge-info">اختيار من متعدد</span></div>
+        <div class="q-text">${q.qText}</div>
+        <div class="options-list" id="options-list-${globalIdx}">
+          ${q.options.map((opt, optIdx) => `
+            <div class="option-item" onclick="selectMCQOption(${globalIdx}, ${optIdx})" id="opt-${globalIdx}-${optIdx}">
+              <input type="radio" name="q-rad-${globalIdx}" id="rad-${globalIdx}-${optIdx}" ${q.userAnswer === optIdx ? 'checked' : ''}>
+              <label for="rad-${globalIdx}-${optIdx}" style="cursor:pointer; width:100%; display:block;">${opt}</label>
+            </div>
+          `).join('')}
+        </div>
+        <div class="explanation-box" id="exp-box-${globalIdx}"></div>
+      `;
+      container.appendChild(qCard);
+    }
+  });
+  
+  // Section TF Header
+  const tfHeader = document.createElement('h3');
+  tfHeader.className = 'quiz-section-title';
+  tfHeader.textContent = '⚖️ القسم الثاني: أسئلة الصواب والخطأ (15 سؤالاً)';
+  container.appendChild(tfHeader);
+  
+  currentExamQuestions.forEach((q, globalIdx) => {
+    if (q.type === 'tf') {
+      const qCard = document.createElement('div');
+      qCard.className = 'q-card';
+      qCard.id = `q-card-${globalIdx}`;
+      qCard.innerHTML = `
+        <div class="q-num">سؤال رقم ${q.num} <span class="badge badge-info">صواب أو خطأ</span></div>
+        <div class="q-text">${q.qText}</div>
+        <div class="tf-container">
+          <button class="tf-btn" id="tf-btn-true-${globalIdx}" onclick="selectTFValue(${globalIdx}, true)">صح (True)</button>
+          <button class="tf-btn" id="tf-btn-false-${globalIdx}" onclick="selectTFValue(${globalIdx}, false)">خطأ (False)</button>
+        </div>
+        <div class="explanation-box" id="exp-box-${globalIdx}"></div>
+      `;
+      container.appendChild(qCard);
+    }
+  });
+}
+
+function selectMCQOption(qIdx, optIdx) {
+  // Update State
+  currentExamQuestions[qIdx].userAnswer = optIdx;
+  
+  // Update Classes Visually
+  const optionsContainer = document.getElementById(`options-list-${qIdx}`);
+  optionsContainer.querySelectorAll('.option-item').forEach((el, idx) => {
+    if (idx === optIdx) {
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+    } else {
+      el.classList.remove('selected');
+      el.querySelector('input').checked = false;
+    }
+  });
+}
+
+function selectTFValue(qIdx, val) {
+  // Update State
+  currentExamQuestions[qIdx].userAnswer = val;
+  
+  // Update UI Elements
+  const trueBtn = document.getElementById(`tf-btn-true-${qIdx}`);
+  const falseBtn = document.getElementById(`tf-btn-false-${qIdx}`);
+  
+  if (val === true) {
+    trueBtn.classList.add('selected-true');
+    falseBtn.classList.remove('selected-false');
+  } else {
+    falseBtn.classList.add('selected-false');
+    trueBtn.classList.remove('selected-true');
+  }
+}
+
+// --- EVALUATE AND GRADE EXAM ---
+function gradeExam() {
+  let score = 0;
+  let total = 30;
+  
+  // Check if there are unanswered questions
+  let unanswered = [];
+  currentExamQuestions.forEach((q) => {
+    if (q.userAnswer === null) {
+      unanswered.push(q.num);
+    }
+  });
+  
+  if (unanswered.length > 0) {
+    const confirmSubmit = confirm(`تنبيه: لقد تركت الأسئلة رقم (${unanswered.join(', ')}) دون إجابة. هل تريد إنهاء وتصحيح الامتحان على أية حال؟`);
+    if (!confirmSubmit) return;
+  }
+  
+  // Start grading loop
+  currentExamQuestions.forEach((q, globalIdx) => {
+    const card = document.getElementById(`q-card-${globalIdx}`);
+    const expBox = document.getElementById(`exp-box-${globalIdx}`);
+    let isCorrect = false;
+    
+    if (q.type === 'mcq') {
+      // Color correct and incorrect options
+      q.options.forEach((opt, optIdx) => {
+        const optEl = document.getElementById(`opt-${globalIdx}-${optIdx}`);
+        if (optIdx === q.correctIdx) {
+          // Correct choice highlight in Green
+          optEl.style.borderColor = 'var(--green)';
+          optEl.style.background = 'rgba(0, 232, 122, 0.08)';
+        } else if (optIdx === q.userAnswer && q.userAnswer !== q.correctIdx) {
+          // User wrong choice highlight in Red
+          optEl.style.borderColor = 'var(--red)';
+          optEl.style.background = 'rgba(255, 61, 61, 0.08)';
+        }
+      });
+      
+      if (q.userAnswer === q.correctIdx) {
+        isCorrect = true;
+        score++;
+      }
+    } else if (q.type === 'tf') {
+      const trueBtn = document.getElementById(`tf-btn-true-${globalIdx}`);
+      const falseBtn = document.getElementById(`tf-btn-false-${globalIdx}`);
+      
+      // Color borders based on validation
+      if (q.correctVal === true) {
+        trueBtn.style.borderColor = 'var(--green)';
+        trueBtn.style.color = 'var(--green)';
+        if (q.userAnswer === false) {
+          falseBtn.style.borderColor = 'var(--red)';
+          falseBtn.style.color = 'var(--red)';
+        }
+      } else {
+        falseBtn.style.borderColor = 'var(--green)';
+        falseBtn.style.color = 'var(--green)';
+        if (q.userAnswer === true) {
+          trueBtn.style.borderColor = 'var(--red)';
+          trueBtn.style.color = 'var(--red)';
+        }
+      }
+      
+      if (q.userAnswer === q.correctVal) {
+        isCorrect = true;
+        score++;
+      }
+    }
+    
+    // Display Explanations below each card
+    expBox.style.display = 'block';
+    if (isCorrect) {
+      expBox.className = 'explanation-box correct';
+      expBox.innerHTML = `<strong>✔️ إجابة صحيحة!</strong><br>${q.explanation}`;
+      card.style.borderColor = 'var(--green)';
+    } else {
+      expBox.className = 'explanation-box incorrect';
+      if (q.type === 'mcq') {
+        expBox.innerHTML = `<strong>❌ إجابة غير صحيحة!</strong> (الإجابة الصحيحة هي: ${q.options[q.correctIdx]})<br>${q.explanation}`;
+      } else {
+        expBox.innerHTML = `<strong>❌ إجابة غير صحيحة!</strong> (الإجابة الصحيحة هي: ${q.correctVal ? 'صح' : 'خطأ'})<br>${q.explanation}`;
+      }
+      card.style.borderColor = 'var(--red)';
+    }
+  });
+  
+  // Render Score Board
+  const scorePct = (score / total) * 100;
+  const scoreTxtEl = document.getElementById('result-score-txt');
+  scoreTxtEl.textContent = `${score}/${total}`;
+  
+  const feedbackTitleEl = document.getElementById('result-feedback-title');
+  const feedbackDescEl = document.getElementById('result-feedback-desc');
+  
+  if (scorePct >= 90) {
+    feedbackTitleEl.textContent = '🌟 عبقري متميز! أداء من الطراز الأول!';
+    feedbackTitleEl.style.color = 'var(--green)';
+    feedbackDescEl.textContent = 'لقد حطمت الامتحان تماماً ومستعد للحصول على الدرجة النهائية كاملة غداً بحول الله!';
+  } else if (scorePct >= 75) {
+    feedbackTitleEl.textContent = '👍 ممتاز جداً ومستعد بقوة!';
+    feedbackTitleEl.style.color = 'var(--cyan)';
+    feedbackDescEl.textContent = 'معلوماتك ممتازة ومرتبة، فقط راجع الأخطاء البسيطة التي وقعت بها لتفاديها في الامتحان الحقيقي.';
+  } else if (scorePct >= 50) {
+    feedbackTitleEl.textContent = '📈 أداء مقبول وبحاجة لبعض التركيز!';
+    feedbackTitleEl.style.color = 'var(--yellow)';
+    feedbackDescEl.textContent = 'لقد تجاوزت نسبة النجاح ولكن يفضل مراجعة المحاور والملخصات بالأعلى ومحاولة إعادة توليد اختبار جديد لرفع جاهزيتك.';
+  } else {
+    feedbackTitleEl.textContent = '⚠️ بحاجة لمراجعة سريعة للملخص!';
+    feedbackTitleEl.style.color = 'var(--red)';
+    feedbackDescEl.textContent = 'الامتحان فرصة ذهبية للملمة الأفكار الآن. لا تقلق، اقرأ التلخيص ونظام الحفظ بالأعلى ثم اضغط زر إعادة توليد الامتحان لتتحدى نفسك مجدداً.';
+  }
+  
+  // Hide Submit Button and show board
+  document.getElementById('submit-exam-btn').style.display = 'none';
+  document.getElementById('results-board').style.display = 'block';
+  
+  // Scroll to results board smoothly
+  document.getElementById('results-board').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
+--- END OF FILE index.html ---
