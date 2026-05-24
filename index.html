@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#060809">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>DowUplBot Player — Series PWA</title>
+
+<!-- الخطوط -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ─── DESIGN SYSTEM ─── */
+:root {
+  --bg: #060809;
+  --surface: #0c0f12;
+  --panel: #10141a;
+  --border: #1a2030;
+  --border2: #232d3d;
+  --green: #00e87a;
+  --yellow: #ffcc00;
+  --red: #ff3d3d;
+  --blue: #3d9eff;
+  --cyan: #00d4ff;
+  --dim: #2a3545;
+  --text: #bccdd8;
+  --text-dim: #4a5e72;
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body { 
+  padding: 16px; 
+  padding-bottom: env(safe-area-inset-bottom, 24px);
+}
+
+/* ─── HEADER ─── */
+.header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 20px; 
+  gap: 12px; 
+  flex-wrap: nowrap; 
+  padding-bottom: 16px; 
+  border-bottom: 1px solid var(--border); 
+}
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+.header-left h1 { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: clamp(0.95rem, 4vw, 1.25rem); 
+  color: var(--green); 
+  letter-spacing: 0.02em; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-left p { 
+  font-size: clamp(0.65rem, 2.8vw, 0.8rem); 
+  color: var(--text-dim); 
+  font-family: 'Tajawal', sans-serif; 
+  margin-top: 5px; 
+}
+
+/* PWA INSTALL BUTTON */
+.btn-install {
+  display: none;
+  background: linear-gradient(135deg, var(--green), #00b35c);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 232, 122, 0.2);
+}
+.btn-install:active {
+  transform: scale(0.96);
+}
+
+/* ─── PANELS & COMPONENTS ─── */
+.panel { 
+  background: var(--panel); 
+  border: 1px solid var(--border); 
+  border-radius: 14px; 
+  padding: 16px; 
+  margin-bottom: 16px; 
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.panel-hd { 
+  font-family: 'Tajawal', sans-serif; 
+  font-weight: 700;
+  font-size: 0.95rem; 
+  color: var(--text); 
+  margin-bottom: 16px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+.badge-count {
+  background: var(--border);
+  color: var(--green);
+  font-size: 0.75rem;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* ─── SEARCH BOX ─── */
+.search-container { 
+  margin-bottom: 16px; 
+  position: relative; 
+}
+.search-input { 
+  width: 100%; 
+  padding: 14px 16px 14px 44px; 
+  background: var(--surface); 
+  border: 1px solid var(--border2); 
+  border-radius: 10px; 
+  color: var(--text); 
+  font-family: 'Tajawal', sans-serif; 
+  font-size: 0.95rem; 
+  outline: none; 
+  transition: all 0.3s ease; 
+}
+.search-input:focus { 
+  border-color: var(--green); 
+  box-shadow: 0 0 0 3px rgba(0, 232, 122, 0.15); 
+}
+.search-input::placeholder { 
+  color: var(--text-dim); 
+}
+.search-icon { 
+  position: absolute; 
+  left: 14px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  color: var(--text-dim); 
+  pointer-events: none; 
+}
+
+/* ─── CATALOG ─── */
+.series-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+  gap: 12px; 
+}
+.series-card { 
+  background: var(--surface); 
+  border: 1px solid var(--border2); 
+  border-radius: 10px; 
+  padding: 18px 12px; 
+  text-align: center; 
+  cursor: pointer; 
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  min-height: 120px; 
+  position: relative;
+  overflow: hidden;
+}
+.series-card:active { 
+  transform: scale(0.97);
+}
+@media (hover: hover) {
+  .series-card:hover { 
+    border-color: var(--green); 
+    background: rgba(0,232,122,0.04); 
+    transform: translateY(-2px); 
+  }
+}
+.series-card h3 { 
+  font-size: 0.95rem; 
+  font-weight: 700;
+  color: var(--text); 
+  margin-bottom: 8px; 
+  line-height: 1.4; 
+}
+.series-card span { 
+  font-family: 'IBM Plex Mono', monospace; 
+  font-size: 0.7rem; 
+  color: var(--text-dim); 
+}
+
+/* ─── CUSTOM ALERT/DIALOG MODAL ─── */
+.custom-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(4, 5, 6, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  padding: 20px;
+}
+.custom-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.custom-modal.show .modal-content {
+  transform: scale(1);
+}
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.modal-text {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.modal-btn {
+  background: var(--border2);
+  color: var(--text);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+.modal-btn:hover {
+  background: var(--border);
+  color: #fff;
+}
+
+/* TOAST NOTIFICATION */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #161c26;
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10000;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toast-container.show {
+  transform: translateX(-50%) translateY(0);
+}
+.toast-text {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.msg-box { text-align: center; padding: 40px 20px; font-family: 'Tajawal', sans-serif; color: var(--yellow); grid-column: 1 / -1; }
+.error-text { color: var(--red); }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <div class="header">
+    <div class="header-left">
+      <h1>📺 DowUplBot Player</h1>
+      <p id="header-subtitle">تطبيق المسلسلات الذكي والمباشر (PWA)</p>
+    </div>
+    <button id="btn-pwa-install" class="btn-install">
+      <span>تثبيت</span> 📺
+    </button>
+  </div>
+
+  <div id="view-catalog" class="panel">
+    <div class="panel-hd">
+      <span>قائمة المسلسلات المتاحة</span>
+      <span class="badge-count" id="series-counter">0</span>
+    </div>
+    
+    <div class="search-container">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="search-input" class="search-input" placeholder="ابحث عن مسلسل... (يدعم أ، إ، ا، ي، ئ، ة، ه)">
+    </div>
+    
+    <div id="series-grid" class="series-grid">
+      <div class="msg-box">جاري تحميل المسلسلات...</div>
+    </div>
+  </div>
+</div>
+
+<!-- مكوّن الإشعارات (Toast) البديل لـ alert -->
+<div id="toast" class="toast-container">
+  <span id="toast-icon">✨</span>
+  <span id="toast-message" class="toast-text">تم نسخ الرابط بنجاح!</span>
+</div>
+
+<!-- مكوّن النافذة المنبثقة (Modal) البديل لـ alert -->
+<div id="modal" class="custom-modal">
+  <div class="modal-content">
+    <div class="modal-icon" id="modal-icon">⚠️</div>
+    <div class="modal-title" id="modal-title">تنبيه</div>
+    <div class="modal-text" id="modal-text">لا توجد حلقات متوفرة لهذا العمل في الوقت الحالي.</div>
+    <button class="modal-btn" onclick="closeModal()">حسناً</button>
+  </div>
+</div>
+
+<script>
+// الإعدادات الرئيسية للـ API
+const API_BASE_URL = 'https://ostora-edge-api.pages.dev/rseries';
+let allSeriesData = []; 
+
+// ─── ميزة الـ TOAST و MODAL البديلة للـ ALERT الافتراضية ───
+function showToast(message, icon = "⚡") {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-message').innerText = message;
+    document.getElementById('toast-icon').innerText = icon;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2800);
+}
+
+function showModal(title, text, icon = "⚠️") {
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-text').innerText = text;
+    document.getElementById('modal-icon').innerText = icon;
+    document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+}
+
+// تطبيع النصوص العربية لتسهيل البحث الفائق والدقيق
+function normalizeArabic(text) {
+    if (!text) return '';
+    return text.replace(/[\u064B-\u065F\u0670]/g, '')
+               .replace(/[أإآا]/g, 'ا')
+               .replace(/[يىئ]/g, 'ي')
+               .replace(/[ةه]/g, 'ه');
+}
+
+document.getElementById('search-input').addEventListener('input', function(e) {
+    const query = normalizeArabic(e.target.value.trim().toLowerCase());
+    const filteredData = allSeriesData.filter(series => normalizeArabic(series.name.toLowerCase()).includes(query));
+    renderCatalog(filteredData);
+});
+
+async function loadCatalog() {
+    const grid = document.getElementById('series-grid');
+    grid.innerHTML = '<div class="msg-box">جاري تحميل المسلسلات...</div>';
+    try {
+        const res = await fetch(API_BASE_URL);
+        const data = await res.json();
+        if (data.status === 'success' && data.data && Array.isArray(data.data)) {
+            allSeriesData = data.data;
+            document.getElementById('series-counter').innerText = allSeriesData.length;
+            renderCatalog(allSeriesData);
+            showToast("تم تحديث البيانات بنجاح", "✅");
+        } else { 
+            grid.innerHTML = '<div class="msg-box error-text">فشل في استخراج البيانات من الـ API</div>'; 
+        }
+    } catch (err) {
+        console.error(err);
+        grid.innerHTML = `<div class="msg-box error-text">تعذر الاتصال بالخادم (تأكد من اتصال الإنترنت)</div>`;
+    }
+}
+
+function renderCatalog(dataArray) {
+    const grid = document.getElementById('series-grid');
+    grid.innerHTML = '';
+    if (dataArray.length === 0) {
+        grid.innerHTML = '<div class="msg-box" style="width:100%">لا توجد نتائج مطابقة لبحثك.</div>';
+        return;
+    }
+    dataArray.forEach(series => {
+        const card = document.createElement('div');
+        card.className = 'series-card';
+        card.onclick = () => openSeriesInExternalApp(series.id, series.name, card);
+        card.innerHTML = `<h3>${series.name}</h3><span>ID: ${series.id}</span>`;
+        grid.appendChild(card);
+    });
+}
+
+// ترميز آمن يدعم المحتوى والرموز البرمجية للغة العربية في الـ Base64
+function safeB64Encode(str) {
+    try {
+        const bytes = new TextEncoder().encode(str);
+        let binString = "";
+        for (let i = 0; i < bytes.length; i++) {
+            binString += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binString);
+    } catch (e) {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+}
+
+async function openSeriesInExternalApp(seriesId, seriesName, cardElement) {
+    const originalContent = cardElement.innerHTML;
+    cardElement.style.pointerEvents = 'none';
+    cardElement.innerHTML = `<h3>${seriesName}</h3><span style="color: var(--yellow);">جاري تحضير الحلقات...</span>`;
+    
+    try {
+        const res = await fetch(`${API_BASE_URL}/${seriesId}`);
+        const data = await res.json();
+        
+        if (data.status === 'success' && data.episodes && data.episodes.length > 0) {
+            // ترتيب الحلقات تصاعدياً
+            const episodes = data.episodes.sort((a,b) => parseInt(a.number) - parseInt(b.number));
+            
+            // صياغة البيانات
+            const payload = episodes.map(ep => ({
+                title: ep.title || `الحلقة ${ep.number}`,
+                src: ep.url
+            }));
+            
+            const jsonString = JSON.stringify(payload);
+            const rawBase64 = safeB64Encode(jsonString);
+            const encodedBase64 = encodeURIComponent(rawBase64);
+            const intentUri = `videoplyrio://open?data=${encodedBase64}`;
+            
+            // تشغيل الرابط العميق عبر iframe مخفي
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = intentUri;
+            document.body.appendChild(iframe);
+            
+            showToast("جاري توجيهك للمشغل...", "🎬");
+
+            // إزالة الـ iframe
+            setTimeout(() => {
+                if (iframe.parentNode) {
+                    document.body.removeChild(iframe);
+                }
+            }, 1000);
+
+        } else {
+            showModal('تنبيه', 'لا توجد حلقات متوفرة لهذا العمل حالياً.', '📺');
+        }
+    } catch (err) {
+        console.error(err);
+        showModal('خطأ في الاتصال', 'تعذر جلب حلقات هذا العمل، يرجى التحقق من اتصالك بالشبكة.', '❌');
+    } finally {
+        cardElement.style.pointerEvents = '';
+        cardElement.innerHTML = originalContent;
+    }
+}
+
+// ─── PWA MECHANISM ───
+
+// تفعيل وتوليد أيقونة التطبيق باستعمال الـ Canvas لدعم الـ PWA بشكل ديناميكي
+function generatePWAIcon(size) {
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    
+    // خلفية دائرية جذابة تتوافق مع وضع العرض الداكن للتطبيق
+    ctx.fillStyle = '#0c0f12';
+    ctx.beginPath();
+    ctx.roundRect(0, 0, size, size, size * 0.22); // iOS Squircle style
+    ctx.fill();
+    
+    // رسم الإيموجي 📺
+    ctx.font = `${size * 0.55}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('📺', size / 2, size / 2 + size * 0.04);
+    
+    return canvas.toDataURL('image/png');
+}
+
+// حقن ملف الـ Manifest وميزات الـ PWA بعد تحميل الصفحة مباشرة
+function setupDynamicPWA() {
+    const icon192 = generatePWAIcon(192);
+    const icon512 = generatePWAIcon(512);
+
+    const manifestObj = {
+        name: "DowUplBot Player PWA",
+        short_name: "DowUpl Player",
+        description: "واجهة تشغيل المسلسلات المباشرة لـ DowUplBot",
+        start_url: window.location.href,
+        display: "standalone",
+        background_color: "#060809",
+        theme_color: "#060809",
+        orientation: "any",
+        icons: [
+            {
+                src: icon192,
+                sizes: "192x192",
+                type: "image/png",
+                purpose: "any maskable"
+            },
+            {
+                src: icon512,
+                sizes: "512x512",
+                type: "image/png",
+                purpose: "any maskable"
+            }
+        ]
+    };
+
+    // تحويل الكائن لملف Manifest رقمي
+    const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    
+    // حقنه في رأس الصفحة HTML
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestURL;
+    document.head.appendChild(link);
+
+    // تسجيل Service Worker مدمج تلقائياً (Inline Service Worker)
+    if ('serviceWorker' in navigator) {
+        const swScript = `
+            const CACHE_NAME = 'dowuplbot-player-v2';
+            const ASSETS = [
+                '${window.location.href}'
+            ];
+            self.addEventListener('install', (e) => {
+                e.waitUntil(
+                    caches.open(CACHE_NAME).then((cache) => {
+                        return cache.addAll(ASSETS);
+                    }).then(() => self.skipWaiting())
+                );
+            });
+            self.addEventListener('activate', (e) => {
+                e.waitUntil(
+                    caches.keys().then((keys) => {
+                        return Promise.all(
+                            keys.map((key) => {
+                                if (key !== CACHE_NAME) {
+                                    return caches.delete(key);
+                                }
+                            })
+                        );
+                    }).then(() => self.clients.claim())
+                );
+            });
+            self.addEventListener('fetch', (e) => {
+                e.respondWith(
+                    fetch(e.request).catch(() => {
+                        return caches.match(e.request);
+                    })
+                );
+            });
+        `;
+        const swBlob = new Blob([swScript], {type: 'text/javascript'});
+        const swURL = URL.createObjectURL(swBlob);
+
+        // إحاطة التسجيل بـ try-catch لمنع الخطأ المتزامن في بيئات التطوير/Sandbox عند استخدام بروتوكول blob:
+        try {
+            navigator.serviceWorker.register(swURL).then(() => {
+                console.log('Service Worker Registered Successfully.');
+            }).catch(err => {
+                console.warn('Service Worker registration rejected:', err);
+            });
+        } catch (err) {
+            console.warn('Service Worker registration not supported in this sandbox/origin context:', err);
+        }
+    }
+}
+
+// تفعيل ميزة زر التثبيت عند توفرها من المتصفح
+let deferredPrompt;
+const btnInstall = document.getElementById('btn-pwa-install');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // إظهار زر التثبيت
+    btnInstall.style.display = 'flex';
+});
+
+btnInstall.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            showToast('شكراً لتثبيتك التطبيق!', '🎉');
+            btnInstall.style.display = 'none';
+        }
+        deferredPrompt = null;
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    showToast('تم تثبيت التطبيق بنجاح!', '📱');
+    btnInstall.style.display = 'none';
+});
+
+window.onload = () => {
+    loadCatalog();
+    setupDynamicPWA();
+};
+</script>
+</body>
+</html>
