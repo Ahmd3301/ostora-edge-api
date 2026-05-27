@@ -134,6 +134,7 @@ body {
 .search-container { 
   margin-bottom: 16px; 
   position: relative; 
+  display: none; /* يتم إظهاره ديناميكياً داخل القوائم */
 }
 .search-input { 
   width: 100%; 
@@ -205,6 +206,26 @@ body {
   font-family: 'IBM Plex Mono', monospace; 
   font-size: 0.7rem; 
   color: var(--text-dim); 
+}
+
+/* ─── BACK BUTTON ─── */
+.btn-back {
+  display: none;
+  background: var(--border2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: bold;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.btn-back:active {
+  transform: scale(0.95);
 }
 
 /* ─── CUSTOM ALERT/DIALOG MODAL ─── */
@@ -321,28 +342,31 @@ body {
 
   <div id="view-catalog" class="panel">
     <div class="panel-hd">
-      <span>قائمة المسلسلات المتاحة</span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button id="btn-back" class="btn-back">⬅️ رجوع</button>
+        <span id="panel-title">الأقسام الرئيسية</span>
+      </div>
       <span class="badge-count" id="series-counter">0</span>
     </div>
     
-    <div class="search-container">
+    <div class="search-container" id="search-container">
       <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="search-input" class="search-input" placeholder="ابحث عن مسلسل... (يدعم أ، إ، ا، ي، ئ، ة، ه)">
+      <input type="text" id="search-input" class="search-input" placeholder="ابحث... (يدعم أ، إ، ا، ي، ئ، ة، ه)">
     </div>
     
     <div id="series-grid" class="series-grid">
-      <div class="msg-box">جاري تحميل المسلسلات...</div>
+      <!-- محتوى ديناميكي -->
     </div>
   </div>
 </div>
 
-<!-- مكوّن الإشعارات (Toast) البديل لـ alert -->
+<!-- مكوّن الإشعارات (Toast) -->
 <div id="toast" class="toast-container">
   <span id="toast-icon">✨</span>
   <span id="toast-message" class="toast-text">تم نسخ الرابط بنجاح!</span>
 </div>
 
-<!-- مكوّن النافذة المنبثقة (Modal) البديل لـ alert -->
+<!-- مكوّن النافذة المنبثقة (Modal) -->
 <div id="modal" class="custom-modal">
   <div class="modal-content">
     <div class="modal-icon" id="modal-icon">⚠️</div>
@@ -353,9 +377,39 @@ body {
 </div>
 
 <script>
-// الإعدادات الرئيسية للـ API
-const API_BASE_URL = 'https://ostora-edge-api.pages.dev/rseries';
+// إعداد قاعدة البيانات والمسارات ديناميكياً بناءً على النطاق المضيف
+const API_BASE_URL = window.location.origin;
 let allSeriesData = []; 
+
+// الأقسام الرئيسية في التطبيق
+const MAIN_CATEGORIES = [
+    { name: "🌙 مسلسلات رمضان", type: "rseries" },
+    { name: "📺 مسلسلات عربية", type: "series" },
+    { name: "🎬 أفلام عربية", type: "moviesar" },
+    { name: "⚽ القنوات الرياضية", type: "sports" }
+];
+
+// تصنيفات القنوات الرياضية
+const SPORTS_SUBCATEGORIES = [
+    { name: "🇪🇬 قنوات رياضية مصرية", id: "200" },
+    { name: "⚽ بي إن سبورت FHD", id: "333" },
+    { name: "⚽ بي إن سبورت HD", id: "332" },
+    { name: "⚽ بي إن سبورت SD", id: "283" },
+    { name: "⚽ بي إن سبورت LOW", id: "331" },
+    { name: "⚽ بي إن سبورت Premium HD", id: "1070" },
+    { name: "⚽ بي إن سبورت Premium SD", id: "1069" },
+    { name: "🎙️ قنوات ثمانية", id: "6979" },
+    { name: "⭐ StarsPlay الرياضية", id: "3471" },
+    { name: "🇦🇪 أبو ظبي الرياضية", id: "467" },
+    { name: "💜 شاهد الرياضية", id: "3934" }
+];
+
+// حفظ حالة الملاحة الحالية للتنقل الخلفي
+let currentState = {
+    view: 'categories', // 'categories', 'sports_hub', 'items'
+    categoryType: null,
+    categoryName: ''
+};
 
 // ─── ميزة الـ TOAST و MODAL البديلة للـ ALERT الافتراضية ───
 function showToast(message, icon = "⚡") {
@@ -379,7 +433,7 @@ function closeModal() {
     document.getElementById('modal').classList.remove('show');
 }
 
-// تطبيع النصوص العربية لتسهيل البحث الفائق والدقيق
+// تطبيع النصوص العربية لتسهيل البحث الدقيق
 function normalizeArabic(text) {
     if (!text) return '';
     return text.replace(/[\u064B-\u065F\u0670]/g, '')
@@ -394,17 +448,83 @@ document.getElementById('search-input').addEventListener('input', function(e) {
     renderCatalog(filteredData);
 });
 
-async function loadCatalog() {
+// الرجوع إلى الصفحة السابقة
+document.getElementById('btn-back').addEventListener('click', () => {
+    if (currentState.view === 'sports_hub' || currentState.view === 'items') {
+        renderMainCategories();
+    }
+});
+
+// عرض الفئات الرئيسية المتاحة بالتطبيق
+function renderMainCategories() {
+    currentState = { view: 'categories', categoryType: null, categoryName: 'الأقسام الرئيسية' };
+    
+    document.getElementById('header-subtitle').innerText = "تطبيق المسلسلات الذكي والمباشر (PWA)";
+    document.getElementById('btn-back').style.display = 'none';
+    document.getElementById('search-container').style.display = 'none';
+    document.getElementById('panel-title').innerText = "الأقسام الرئيسية";
+    document.getElementById('series-counter').innerText = MAIN_CATEGORIES.length;
+
     const grid = document.getElementById('series-grid');
-    grid.innerHTML = '<div class="msg-box">جاري تحميل المسلسلات...</div>';
+    grid.innerHTML = '';
+
+    MAIN_CATEGORIES.forEach(cat => {
+        const card = document.createElement('div');
+        card.className = 'series-card';
+        card.onclick = () => {
+            if (cat.type === 'sports') {
+                renderSportsHub();
+            } else {
+                loadCatalog(cat.type, cat.name);
+            }
+        };
+        card.innerHTML = `<h3>${cat.name}</h3><span>عرض القسم</span>`;
+        grid.appendChild(card);
+    });
+}
+
+// عرض باقات البث المباشر والقنوات الرياضية
+function renderSportsHub() {
+    currentState = { view: 'sports_hub', categoryType: 'sports', categoryName: 'القنوات الرياضية' };
+    
+    document.getElementById('btn-back').style.display = 'flex';
+    document.getElementById('search-container').style.display = 'none';
+    document.getElementById('panel-title').innerText = "باقات البث الرياضي";
+    document.getElementById('series-counter').innerText = SPORTS_SUBCATEGORIES.length;
+
+    const grid = document.getElementById('series-grid');
+    grid.innerHTML = '';
+
+    SPORTS_SUBCATEGORIES.forEach(sub => {
+        const card = document.createElement('div');
+        card.className = 'series-card';
+        card.style.borderColor = 'var(--blue)';
+        card.onclick = () => openItemInExternalApp(sub.id, sub.name, card, true);
+        card.innerHTML = `<h3>${sub.name}</h3><span style="color: var(--blue);">قسم مباشر</span>`;
+        grid.appendChild(card);
+    });
+}
+
+// جلب وتحميل قائمة الأعمال لفئة معينة
+async function loadCatalog(type, title) {
+    currentState = { view: 'items', categoryType: type, categoryName: title };
+    
+    document.getElementById('btn-back').style.display = 'flex';
+    document.getElementById('search-container').style.display = 'block';
+    document.getElementById('search-input').value = ''; 
+    document.getElementById('panel-title').innerText = title;
+
+    const grid = document.getElementById('series-grid');
+    grid.innerHTML = '<div class="msg-box">جاري تحميل القائمة...</div>';
+    
     try {
-        const res = await fetch(API_BASE_URL);
+        const res = await fetch(`${API_BASE_URL}/${type}`);
         const data = await res.json();
         if (data.status === 'success' && data.data && Array.isArray(data.data)) {
             allSeriesData = data.data;
             document.getElementById('series-counter').innerText = allSeriesData.length;
             renderCatalog(allSeriesData);
-            showToast("تم تحديث البيانات بنجاح", "✅");
+            showToast(`تم تحديث قائمة ${title}`, "✅");
         } else { 
             grid.innerHTML = '<div class="msg-box error-text">فشل في استخراج البيانات من الـ API</div>'; 
         }
@@ -421,11 +541,11 @@ function renderCatalog(dataArray) {
         grid.innerHTML = '<div class="msg-box" style="width:100%">لا توجد نتائج مطابقة لبحثك.</div>';
         return;
     }
-    dataArray.forEach(series => {
+    dataArray.forEach(item => {
         const card = document.createElement('div');
         card.className = 'series-card';
-        card.onclick = () => openSeriesInExternalApp(series.id, series.name, card);
-        card.innerHTML = `<h3>${series.name}</h3><span>ID: ${series.id}</span>`;
+        card.onclick = () => openItemInExternalApp(item.id, item.name, card, false);
+        card.innerHTML = `<h3>${item.name}</h3><span>ID: ${item.id}</span>`;
         grid.appendChild(card);
     });
 }
@@ -444,18 +564,29 @@ function safeB64Encode(str) {
     }
 }
 
-async function openSeriesInExternalApp(seriesId, seriesName, cardElement) {
+// جلب الحلقات وتمريرها للمشغل الخارجي
+async function openItemInExternalApp(itemId, itemName, cardElement, isSports = false) {
     const originalContent = cardElement.innerHTML;
     cardElement.style.pointerEvents = 'none';
-    cardElement.innerHTML = `<h3>${seriesName}</h3><span style="color: var(--yellow);">جاري تحضير الحلقات...</span>`;
+    cardElement.innerHTML = `<h3>${itemName}</h3><span style="color: var(--yellow);">جاري تحضير البث...</span>`;
+    
+    // بناء الرابط البرمجي ديناميكياً بناءً على فئة المحتوى
+    const fetchUrl = isSports 
+        ? `${API_BASE_URL}/sports/${itemId}` 
+        : `${API_BASE_URL}/${currentState.categoryType}/${itemId}`;
     
     try {
-        const res = await fetch(`${API_BASE_URL}/${seriesId}`);
+        const res = await fetch(fetchUrl);
         const data = await res.json();
         
         if (data.status === 'success' && data.episodes && data.episodes.length > 0) {
-            // ترتيب الحلقات تصاعدياً
-            const episodes = data.episodes.sort((a,b) => parseInt(a.number) - parseInt(b.number));
+            // ترتيب الحلقات تصاعدياً رقمياً
+            const episodes = data.episodes.sort((a,b) => {
+                const numA = parseInt(a.number);
+                const numB = parseInt(b.number);
+                if (isNaN(numA) || isNaN(numB)) return 0;
+                return numA - numB;
+            });
             
             // صياغة البيانات
             const payload = episodes.map(ep => ({
@@ -488,7 +619,7 @@ async function openSeriesInExternalApp(seriesId, seriesName, cardElement) {
         }
     } catch (err) {
         console.error(err);
-        showModal('خطأ في الاتصال', 'تعذر جلب حلقات هذا العمل، يرجى التحقق من اتصالك بالشبكة.', '❌');
+        showModal('خطأ في الاتصال', 'تعذر جلب البيانات، يرجى التحقق من اتصالك بالشبكة.', '❌');
     } finally {
         cardElement.style.pointerEvents = '';
         cardElement.innerHTML = originalContent;
@@ -497,20 +628,17 @@ async function openSeriesInExternalApp(seriesId, seriesName, cardElement) {
 
 // ─── PWA MECHANISM ───
 
-// تفعيل وتوليد أيقونة التطبيق باستعمال الـ Canvas لدعم الـ PWA بشكل ديناميكي
 function generatePWAIcon(size) {
     const canvas = document.createElement('canvas');
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d');
     
-    // خلفية دائرية جذابة تتوافق مع وضع العرض الداكن للتطبيق
     ctx.fillStyle = '#0c0f12';
     ctx.beginPath();
-    ctx.roundRect(0, 0, size, size, size * 0.22); // iOS Squircle style
+    ctx.roundRect(0, 0, size, size, size * 0.22);
     ctx.fill();
     
-    // رسم الإيموجي 📺
     ctx.font = `${size * 0.55}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -519,7 +647,6 @@ function generatePWAIcon(size) {
     return canvas.toDataURL('image/png');
 }
 
-// حقن ملف الـ Manifest وميزات الـ PWA بعد تحميل الصفحة مباشرة
 function setupDynamicPWA() {
     const icon192 = generatePWAIcon(192);
     const icon512 = generatePWAIcon(512);
@@ -549,17 +676,14 @@ function setupDynamicPWA() {
         ]
     };
 
-    // تحويل الكائن لملف Manifest رقمي
     const manifestBlob = new Blob([JSON.stringify(manifestObj)], {type: 'application/json'});
     const manifestURL = URL.createObjectURL(manifestBlob);
     
-    // حقنه في رأس الصفحة HTML
     const link = document.createElement('link');
     link.rel = 'manifest';
     link.href = manifestURL;
     document.head.appendChild(link);
 
-    // تسجيل Service Worker مدمج تلقائياً (Inline Service Worker)
     if ('serviceWorker' in navigator) {
         const swScript = `
             const CACHE_NAME = 'dowuplbot-player-v2';
@@ -597,7 +721,6 @@ function setupDynamicPWA() {
         const swBlob = new Blob([swScript], {type: 'text/javascript'});
         const swURL = URL.createObjectURL(swBlob);
 
-        // إحاطة التسجيل بـ try-catch لمنع الخطأ المتزامن في بيئات التطوير/Sandbox عند استخدام بروتوكول blob:
         try {
             navigator.serviceWorker.register(swURL).then(() => {
                 console.log('Service Worker Registered Successfully.');
@@ -605,19 +728,17 @@ function setupDynamicPWA() {
                 console.warn('Service Worker registration rejected:', err);
             });
         } catch (err) {
-            console.warn('Service Worker registration not supported in this sandbox/origin context:', err);
+            console.warn('Service Worker registration not supported in this context:', err);
         }
     }
 }
 
-// تفعيل ميزة زر التثبيت عند توفرها من المتصفح
 let deferredPrompt;
 const btnInstall = document.getElementById('btn-pwa-install');
 
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    // إظهار زر التثبيت
     btnInstall.style.display = 'flex';
 });
 
@@ -639,7 +760,7 @@ window.addEventListener('appinstalled', () => {
 });
 
 window.onload = () => {
-    loadCatalog();
+    renderMainCategories();
     setupDynamicPWA();
 };
 </script>
